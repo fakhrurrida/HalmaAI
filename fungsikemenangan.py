@@ -6,7 +6,7 @@ def getRedGoals(board):
     array = []
     for i in range(len(board)):
         for j in range(len(board)):
-            if board[i][j]==Square.P_RED:
+            if board[i][j].piece == Square.P_RED:
                 array.append((i,j))
     return array
 
@@ -14,7 +14,7 @@ def getGreenGoals(board):
     array = []
     for i in range(len(board)):
         for j in range(len(board)):
-            if board[i][j]==Square.P_GREEN:
+            if board[i][j].piece == Square.P_GREEN:
                 array.append((i,j))
     return array
 
@@ -44,9 +44,9 @@ for i in range(n):
     for j in range(n):
         a = random.randint(0,2)
         if a == 1:
-            board[i][j] = Square.P_RED
+            board[i][j].piece = Square.P_RED
         else:
-            board[i][j] = Square.P_GREEN
+            board[i][j].piece = Square.P_GREEN
 
 print(board)
 a = getGreenGoals(board)

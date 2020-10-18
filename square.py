@@ -1,5 +1,3 @@
-
-
 class Square():
     
     # Goal constants
@@ -30,7 +28,7 @@ class Square():
         return self.loc
     
     def setLoc(self, row, col):
-        self.loc = (row,loc)
+        self.loc = (row, col)
         
     
     

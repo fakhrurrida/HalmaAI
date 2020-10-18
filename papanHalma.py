@@ -7,11 +7,11 @@ class Papan():
         
         for row in range(b_size):
             for col in range(b_size):
-                if row + col < 4:
+                if row + col < 4: # RED
                     element = Square(2, 2, row, col)
-                elif row + col > 2 * (b_size - 3):
+                elif row + col > 2 * (b_size - 3): # GREEN
                     element = Square(1, 1, row, col)
-                else:
+                else: # EMPTY
                     element = Square(0, 0, row, col)
 
                 board[row][col] = element
