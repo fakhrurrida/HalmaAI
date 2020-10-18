@@ -40,25 +40,6 @@ def findNearest(pInit, board):
 
 
 def gameStateValue(board): 
-    # def getAllRed(board):
-    # # location of RED 
-    #     locOfRed = []
-    #     for row in range(len(board)):
-    #         for col in range(len(board)):
-    #             if (board[row][col].piece == Square.P_RED):
-    #                 locOfRed.append(row,col)
-    #     return locOfRed
-
-
-    # def getAllGreen(board):
-    # # location of GREEN
-    #     locOfGreen = []
-    #     for row in range(len(board)):
-    #         for col in range(len(board)):
-    #             if (board[row][col].piece == Square.P_RED):
-    #                 locOfGreen.append(row,col)
-    #     return locOfGreen
-
     jarakRed = 0
     jarakGreen = 0
 
