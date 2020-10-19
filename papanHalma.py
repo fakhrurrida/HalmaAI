@@ -26,7 +26,7 @@ class Papan():
         self.computer = Square.P_RED
         self.b_size = b_size
         self.board = board
-        self.t_limit = 60
+        self.time_limit = 60
         self.selected_square = None
         self.valid_moves = []
         self.current_turn = Square.P_GREEN
@@ -35,15 +35,15 @@ class Papan():
         self.green_goals = fungsikemenangan.getAllGreen
         self.red_goals = fungsikemenangan.getAllRed
 
-    #if self.current_turn == self.computer:
-    #    self.execute()
+        if self.current_turn == self.computer:
+            self.execute()
     
     #Fungsi eksekusi move computer/Red (AI)
     #def execute(self):
 
-    # def move(self, before, after):
-    #     after.piece = before.piece
-    #     before.piece = Square.P_NONE
+    def move(self, before, after):
+        after.piece = before.piece
+        before.piece = Square.P_NONE
 
 
     # def validator(self, array):
@@ -135,19 +135,49 @@ class Papan():
                 move[0].piece = piece
                 
                 if maximizing and value > bestValue:
-                    best_val = value
+                    bestValue = value
                     best_move = (move[0].loc, tujuan.loc)
                     a = max(a, value)
 
-                if not maximizing and value < best_val:
-                    best_val = value
+                if not maximizing and value < bestValue:
+                    bestValue = value
                     best_move = (move[0].loc, tujuan.loc)
                     b = min(b, value)
 
                 if b <= a:
-                    return best_val, best_move
+                    return bestValue, best_move
         # return int, (squareAwal, squareTujuan)
-        return best_val, best_move
+        return bestValue, best_move
+
+    
+    def execute_computer(self):
+        self.eksekusi = True
+
+        waktu_maks = time.time() + self.time_limit
+        waktu_mulai = time.time()
+
+        minimaxValue, best_move = self.minimax()
+        waktu_akhir = time.time()
+        print("Waktu minimax: ", waktu_akhir-waktu_mulai)
+
+        square_before = self.board[best_move[0][0]][best_move[0][1]]
+        square_after = self.board[best_move[1][0]][best_move[1][1]]
+        self.move(square_before,square_after)
         
+        isWin = fungsikemenangan.cekWinner(board, self.red_goals, self.green_goals)
+        if (isWin):
+            if (isWin == Square.P_GREEN):
+                print("GREEN WINNER WINNER CHICKEN DINNER")
+            elif (isWin == Square.P_RED):
+                print("RED WINNER WINNER CHICKEN DINNER")
+            self.current_turn = None
+        else:
+            if (self.current_turn == Square.P_GREEN):
+                self.current_turn = Square.P_RED
+            if (self.current_turn == Square.P_RED):
+                self.current_turn = Square.P_GREEN
+        
+        self.eksekusi = False
+
 
     
