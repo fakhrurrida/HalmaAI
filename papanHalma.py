@@ -30,12 +30,18 @@ class Papan():
         self.valid_moves = []
         self.current_turn = Square.P_GREEN
         self.eksekusi = False
-
+        self.win = False
         self.green_goals = fungsikemenangan.getAllGreen(self.board)
         self.red_goals = fungsikemenangan.getAllRed(self.board)
-
-        if self.current_turn == self.computer:
-            self.execute()
+        self.tryDisplay()
+        while (not self.win):
+            if self.current_turn == self.computer:
+                self.execute_computer()
+                print("habis gini ada yg pindah")
+                self.tryDisplay()
+            else:
+                self.move_player()
+                self.tryDisplay()
     
     #Fungsi eksekusi move computer/Red (AI)
     #def execute(self):
@@ -81,35 +87,36 @@ class Papan():
     def minimax(self, a=-math.inf, b=math.inf, maximizing=True,  depth=3, t_limit=60):
         
         #basis
-        if depth == 0 or fungsikemenangan.find_winner(self.board) or time.time() > t_limit:
+        if depth == 0 or fungsikemenangan.cekWinner(self.board, self.red_goals, self.green_goals) or time.time() > t_limit:
             moves = []
+            allRed = fungsikemenangan.getAllRed(self.board)
             for square in allRed:
                 row, col = square.loc
-                move = possibleMoveAndJump(board, row, col)
+                move = self.possibleMoveAndJump(self.board, row, col)
                 moves.append((square, move))
             # moves = [(sqaureAwal, [squareTujuan])]
             randAwal = moves[random.randint(0, len(moves))][0]
             jumlahTujuan = len(moves[random.randint(0, len(moves))][1])
             randTujuan = moves[random.randint(0, len(moves))][1][random.randint(0,jumlahTujuan)]
             
-            return fungsiobjektif.utility_distance(self.board), (randAwal, randTujuan)
+            return fungsiobjektif.gameStateValue(self.board), None
         
         bestValue = math.inf if maximizing else -math.inf
         bestMove = None
         moves = []
         
         if maximizing:
-            allRed = fungsikemenangan.getAllRed
+            allRed = fungsikemenangan.getAllRed(self.board)
             for square in allRed:
                 row, col = square.loc
-                move = possibleMoveAndJump(board, row, col)
+                move = self.possibleMoveAndJump(self.board, row, col)
                 moves.append((square, move))
         
         else:
-            allGreen = fungsikemenangan.getAllGreen
+            allGreen = fungsikemenangan.getAllGreen(self.board)
             for square in allGreen:
                 row, col = square.loc
-                move = possibleMoveAndJump(board, row, col)
+                move = self.possibleMoveAndJump(self.board, row, col)
                 moves.append((square,move))
         
         
@@ -132,18 +139,19 @@ class Papan():
                 
                 if maximizing and value > bestValue:
                     bestValue = value
-                    best_move = (move[0].loc, tujuan.loc)
+                    bestMove = (move[0].loc, tujuan.loc)
                     a = max(a, value)
 
                 if not maximizing and value < bestValue:
                     bestValue = value
-                    best_move = (move[0].loc, tujuan.loc)
+                    bestMove = (move[0].loc, tujuan.loc)
                     b = min(b, value)
 
                 if b <= a:
-                    return bestValue, best_move
+                    return bestValue, bestMove
         # return int, (squareAwal, squareTujuan)
-        return bestValue, best_move
+        print(bestMove)
+        return bestValue, bestMove
     
     def execute_computer(self):
         self.eksekusi = True
@@ -166,10 +174,11 @@ class Papan():
             elif (isWin == Square.P_RED):
                 print("RED WINNER WINNER CHICKEN DINNER")
             self.current_turn = None
+            self.win = True
         else:
             if (self.current_turn == Square.P_GREEN):
                 self.current_turn = Square.P_RED
-            if (self.current_turn == Square.P_RED):
+            elif (self.current_turn == Square.P_RED):
                 self.current_turn = Square.P_GREEN
         
         self.eksekusi = False
@@ -192,10 +201,11 @@ class Papan():
             elif (isWin == Square.P_RED):
                 print("RED WINNER WINNER CHICKEN DINNER")
             self.current_turn = None
+            self.win = True
         else:
             if (self.current_turn == Square.P_GREEN):
                 self.current_turn = Square.P_RED
-            if (self.current_turn == Square.P_RED):
+            elif (self.current_turn == Square.P_RED):
                 self.current_turn = Square.P_GREEN
 
     def tryDisplay(self):
@@ -255,8 +265,3 @@ class Papan():
         return list_sebelah
 
 b = Papan(8)
-b.tryDisplay()
-b.move_player()
-b.tryDisplay()
-b.move_player()
-b.tryDisplay()
