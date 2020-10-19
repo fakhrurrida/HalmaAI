@@ -34,7 +34,6 @@ class Papan():
         self.green_goals = fungsikemenangan.getAllGreen(self.board)
         self.red_goals = fungsikemenangan.getAllRed(self.board)
         self.tryDisplay()
-<<<<<<< Updated upstream
         while (not self.win):
             if self.current_turn == self.computer:
                 self.execute_computer()
@@ -43,16 +42,6 @@ class Papan():
             else:
                 self.move_player()
                 self.tryDisplay()
-=======
-        #while (not self.win):
-        #    if self.current_turn == self.computer:
-        #        self.execute_computer()
-        #        print("habis gini ada yg pindah")
-        #        self.tryDisplay()
-        #    else:
-        #        self.move_player()
-        #        self.tryDisplay()
->>>>>>> Stashed changes
     
     #Fungsi eksekusi move computer/Red (AI)
     #def execute(self):
@@ -97,57 +86,32 @@ class Papan():
     #         continue
     def minimax(self, a=-math.inf, b=math.inf, maximizing=True,  depth=3, t_limit=60):
         
+        print(depth)
         #basis
         if depth == 0 or fungsikemenangan.cekWinner(self.board, self.red_goals, self.green_goals):
             
-            moves = []
-            allRed = fungsikemenangan.getAllRed(self.board)
-            for square in allRed:
-                row, col = square.loc
-                move = self.possibleMoveAndJump(self.board, row, col)
-                moves.append((square, move))
-            # moves = [(sqaureAwal, [squareTujuan]),(sqaureAwal, [squareTujuan]),(sqaureAwal, [squareTujuan]
-            # print(moves)
-            awal = random.randint(0, len(moves)-1)
-            randAwal = moves[awal][0]
-            jumlahTujuan = len(moves[awal][1])-1
-            randTujuan = (moves[awal][1])[random.randint(0,jumlahTujuan)]
-
-            #randAwal = moves[random.randint(0, len(moves))][0]
-            #jumlahTujuan = len(moves[random.randint(0, len(moves))][1])
-            #randTujuan = moves[random.randint(0, len(moves))][1][random.randint(0,jumlahTujuan)]
+            return fungsiobjektif.gameStateValue(self.board), None
             
-            return fungsiobjektif.gameStateValue(self.board), (randAwal, randTujuan)
         
         bestValue = math.inf if maximizing else -math.inf
         bestMove = None
         moves = []
-        
+            
         if maximizing:
             allRed = fungsikemenangan.getAllRed(self.board)
-            print()
-            for i in allRed:
-                print(i.loc)
-            print()
             for square in allRed:
                 row, col = square.loc
-                move = self.possibleMoveAndJump(self.board, row, col)
+                move = self.possibleMoveAndJump(self.board, row, col, [])
                 moves.append((square, move))
-                for x in move:
-                    print(square.loc, x.loc)
-                print("-----------------------------5")
+
         else:
             allGreen = fungsikemenangan.getAllGreen(self.board)
             for square in allGreen:
                 row, col = square.loc
-                move = self.possibleMoveAndJump(self.board, row, col)
+                move = self.possibleMoveAndJump(self.board, row, col, [])
                 moves.append((square,move))
         
-        # for move in moves:
-        #     for tujuan in move[1]:
-        #         print(move[0].loc, tujuan.loc)
-        
-        print("MAsuk ga")
+        # print("MAsuk ga")
         for move in moves:
             for tujuan in move[1]:
                 
@@ -156,19 +120,16 @@ class Papan():
                 
                 # self.move(move[0], tujuan)
                 
+                print("------------------------")
+                
                 piece = move[0].piece
                 move[0].piece = Square.P_NONE
                 tujuan.piece = piece
-                # print("loc")
-                # print(move[0].loc)
                 
                 value, Move = self.minimax(a, b, not maximizing, depth-1)
                 
                 tujuan.piece = Square.P_NONE
                 move[0].piece = piece
-                # print("loc")
-                print(move[0].loc, tujuan.loc)
-                
                 
                 if maximizing and value > bestValue:
                     bestValue = value
@@ -260,14 +221,10 @@ class Papan():
 
         occupy = [0, 1, 2]
         if (board[shaf][banjar].tile != board[shaf][banjar].piece):
-            print("masuk remove 1")
+            # print("masuk remove 1")
             occupy.remove(1)
-<<<<<<< Updated upstream
         if (board[shaf][banjar].tile != 0) and (board[shaf][banjar].piece != board[shaf][banjar].tile):
-=======
-        if (board[shaf][banjar].tile != 0) and (board[shaf][banjar].tile != board[shaf][banjar].piece):
->>>>>>> Stashed changes
-            print("masuk remove 0")
+            # print("masuk remove 0")
             occupy.remove(0)
 
         for i in ([-1, 0, 1]):
@@ -285,7 +242,6 @@ class Papan():
                 if (tetangga.piece == 0):
                     if (not isJumpMove):
                         list_sebelah.append(tetangga)
-                        print("5555555555555555555555555555555555555555555555555555")
                     continue
                 
                 # Check jump tiles
@@ -305,5 +261,3 @@ class Papan():
         return list_sebelah
 
 b = Papan(8)
-for a in (b.possibleMoveAndJump(b.board, 0, 0)):
-    print(a.getLoc())
