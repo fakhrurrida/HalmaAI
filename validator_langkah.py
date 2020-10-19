@@ -164,7 +164,9 @@ def generateTetangga(a, player):
 b = Papan(8)
 tryDisplay(b)
 for a in (sebelahnyaTitik([0,1,2,3], b.board, 3,4)):
+    print(a)
     print("tetangga: ", a.getLoc())
 
 for a in (possibleMoveAndJump(b.board,6,7)):
+    print(a)
     print("tetangga JUMP: ", a.getLoc())
