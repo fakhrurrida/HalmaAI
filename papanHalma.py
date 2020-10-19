@@ -129,7 +129,7 @@ class Papan():
                 move[0].piece = Square.P_NONE
                 tujuan.piece = piece
                 
-                value, Move = self.minimax(a, b, not maximizing)
+                value, Move = self.minimax(a, b, not maximizing, depth-1)
                 
                 tujuan.piece = Square.P_NONE
                 move[0].piece = piece
