@@ -94,12 +94,18 @@ class Papan():
                 row, col = square.loc
                 move = self.possibleMoveAndJump(self.board, row, col)
                 moves.append((square, move))
-            # moves = [(sqaureAwal, [squareTujuan])]
-            randAwal = moves[random.randint(0, len(moves))][0]
-            jumlahTujuan = len(moves[random.randint(0, len(moves))][1])
-            randTujuan = moves[random.randint(0, len(moves))][1][random.randint(0,jumlahTujuan)]
+            # moves = [(sqaureAwal, [squareTujuan]),(sqaureAwal, [squareTujuan]),(sqaureAwal, [squareTujuan]
+            print(moves)
+            awal = random.randint(0, len(moves)-1)
+            randAwal = moves[awal][0]
+            jumlahTujuan = len(moves[awal][1])-1
+            randTujuan = (moves[awal][1])[random.randint(0,jumlahTujuan)]
+
+            #randAwal = moves[random.randint(0, len(moves))][0]
+            #jumlahTujuan = len(moves[random.randint(0, len(moves))][1])
+            #randTujuan = moves[random.randint(0, len(moves))][1][random.randint(0,jumlahTujuan)]
             
-            return fungsiobjektif.gameStateValue(self.board), None
+            return fungsiobjektif.gameStateValue(self.board), (randAwal, randTujuan)
         
         bestValue = math.inf if maximizing else -math.inf
         bestMove = None
@@ -162,12 +168,14 @@ class Papan():
         minimaxValue, best_move = self.minimax()
         waktu_akhir = time.time()
         print("Waktu minimax: ", waktu_akhir-waktu_mulai)
-
-        square_before = self.board[best_move[0][0]][best_move[0][1]]
-        square_after = self.board[best_move[1][0]][best_move[1][1]]
+        print(best_move)
+        square_before = self.board[best_move[0].row][best_move[0].col]
+        square_after = self.board[best_move[1].row][best_move[1].col]
+        print("Befooree",square_before.getLoc())
+        print("AFTERRR",square_after.getLoc())
         self.move(square_before,square_after)
         
-        isWin = fungsikemenangan.cekWinner(board, self.red_goals, self.green_goals)
+        isWin = fungsikemenangan.cekWinner(self.board, self.red_goals, self.green_goals)
         if (isWin):
             if (isWin == Square.P_GREEN):
                 print("GREEN WINNER WINNER CHICKEN DINNER")
