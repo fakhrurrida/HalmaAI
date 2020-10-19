@@ -37,7 +37,7 @@ class Papan():
         while (not self.win):
             if self.current_turn == self.computer:
                 self.execute_computer()
-                print("habis gini ada yg pindah")
+                # print("habis gini ada yg pindah")
                 self.tryDisplay()
             else:
                 self.move_player()
@@ -87,7 +87,8 @@ class Papan():
     def minimax(self, a=-math.inf, b=math.inf, maximizing=True,  depth=3, t_limit=60):
         
         #basis
-        if depth == 0 or fungsikemenangan.cekWinner(self.board, self.red_goals, self.green_goals) or time.time() > t_limit:
+        if depth == 0 or fungsikemenangan.cekWinner(self.board, self.red_goals, self.green_goals):
+            
             moves = []
             allRed = fungsikemenangan.getAllRed(self.board)
             for square in allRed:
@@ -95,7 +96,7 @@ class Papan():
                 move = self.possibleMoveAndJump(self.board, row, col)
                 moves.append((square, move))
             # moves = [(sqaureAwal, [squareTujuan]),(sqaureAwal, [squareTujuan]),(sqaureAwal, [squareTujuan]
-            print(moves)
+            # print(moves)
             awal = random.randint(0, len(moves)-1)
             randAwal = moves[awal][0]
             jumlahTujuan = len(moves[awal][1])-1
@@ -125,23 +126,32 @@ class Papan():
                 move = self.possibleMoveAndJump(self.board, row, col)
                 moves.append((square,move))
         
-        
         for move in moves:
-            for tujuan in moves[[1]]:
+            for tujuan in move[1]:
+                print(move[0].loc, tujuan.loc)
+        
+        print("MAsuk ga")
+        for move in moves:
+            for tujuan in move[1]:
                 
-                if time.time()> t_limit:
-                    return bestValue, bestMove
+                # if time.time()> t_limit:
+                #     return bestValue, bestMove
                 
-                self.move(move[0], tujuan)
+                # self.move(move[0], tujuan)
                 
                 piece = move[0].piece
                 move[0].piece = Square.P_NONE
                 tujuan.piece = piece
+                # print("loc")
+                # print(move[0].loc)
                 
                 value, Move = self.minimax(a, b, not maximizing, depth-1)
                 
                 tujuan.piece = Square.P_NONE
                 move[0].piece = piece
+                # print("loc")
+                print(move[0].loc, tujuan.loc)
+                
                 
                 if maximizing and value > bestValue:
                     bestValue = value
@@ -155,8 +165,8 @@ class Papan():
 
                 if b <= a:
                     return bestValue, bestMove
-        # return int, (squareAwal, squareTujuan)
-        print(bestMove)
+        # return int, (squareAwal.loc, squareTujuan.loc)
+        # print(bestMove)
         return bestValue, bestMove
     
     def execute_computer(self):
@@ -168,7 +178,7 @@ class Papan():
         minimaxValue, best_move = self.minimax()
         waktu_akhir = time.time()
         print("Waktu minimax: ", waktu_akhir-waktu_mulai)
-        print(best_move)
+        # print(best_move)
         square_before = self.board[best_move[0].row][best_move[0].col]
         square_after = self.board[best_move[1].row][best_move[1].col]
         print("Befooree",square_before.getLoc())
@@ -228,14 +238,14 @@ class Papan():
 
     def possibleMoveAndJump(self, board, shaf, banjar, list_sebelah=[], isJumpMove=False):
         if (list_sebelah is None):
-            print("masuk list kosong")
+            # print("masuk list kosong")
             list_sebelah = []
 
         occupy = [0, 1, 2]
-        if (board[shaf][banjar].tile != 1):
+        if (board[shaf][banjar].tile != board[shaf][banjar].piece):
             print("masuk remove 1")
             occupy.remove(1)
-        if (board[shaf][banjar].tile != 0) and (board[shaf][banjar].tile != 1):
+        if (board[shaf][banjar].tile != 0) and (board[shaf][banjar].piece != board[shaf][banjar].piece):
             print("masuk remove 0")
             occupy.remove(0)
 

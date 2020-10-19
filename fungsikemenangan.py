@@ -49,9 +49,9 @@ for i in range(n):
         else:
             board[i][j]= Square(1, 1, i, j)
 
-print(board)
-a = getAllGreen(board)
-b = getAllRed(board)
-print(a)
-print(b)
-print(cekWinner(board, b, a))
+# print(board)
+# a = getAllGreen(board)
+# b = getAllRed(board)
+# print(a)
+# print(b)
+# print(cekWinner(board, b, a))

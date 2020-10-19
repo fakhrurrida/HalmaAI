@@ -108,15 +108,15 @@ def sebelahnyaTitik(pionCode, board, shaf, banjar, list_sebelah=[]):
 
 def possibleMoveAndJump(board, shaf, banjar, list_sebelah=[], isJumpMove=False):
     if (len(list_sebelah)==0):
-        print("masuk list kosong")
+        # print("masuk list kosong")
         list_sebelah = []
 
     occupy = [0, 1, 2]
     if (board[shaf][banjar].tile != 1):
-        print("masuk remove 1")
+        # print("masuk remove 1")
         occupy.remove(1)
     if (board[shaf][banjar].tile != 0) and (board[shaf][banjar].tile != 1):
-        print("masuk remove 0")
+        # print("masuk remove 0")
         occupy.remove(0)
 
     for i in ([-1, 0, 1]):
@@ -161,12 +161,12 @@ def generateTetangga(a, player):
     for tetangga in (tetangga_list):
         tryDisplay(tetangga)
 
-b = Papan(8)
-tryDisplay(b)
-for a in (sebelahnyaTitik([0,1,2,3], b.board, 3,4)):
-    print(a)
-    print("tetangga: ", a.getLoc())
+# b = Papan(8)
+# tryDisplay(b)
+# for a in (sebelahnyaTitik([0,1,2,3], b.board, 3,4)):
+#     print(a)
+#     print("tetangga: ", a.getLoc())
 
-for a in (possibleMoveAndJump(b.board,6,7)):
-    print(a)
-    print("tetangga JUMP: ", a.getLoc())
+# for a in (possibleMoveAndJump(b.board,6,7)):
+#     print(a)
+#     print("tetangga JUMP: ", a.getLoc())
