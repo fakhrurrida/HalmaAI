@@ -209,7 +209,7 @@ class Papan():
                 angka+=1
 
     def possibleMoveAndJump(self, board, shaf, banjar, list_sebelah=[], isJumpMove=False):
-        if (len(list_sebelah)==0):
+        if (list_sebelah is None):
             print("masuk list kosong")
             list_sebelah = []
 
@@ -242,7 +242,7 @@ class Papan():
                 jump_shaf = shaf_tetangga + j
                 jump_banjar = banjar_tetangga + i
                 
-                if (jump_shaf < 0 or jump_banjar < 0 or jump_shaf >= 7 or jump_banjar >= 7):
+                if (jump_shaf < 0 or jump_banjar < 0 or jump_shaf > 7 or jump_banjar > 7):
                     continue
                 
                 jump_tetangga = board[jump_shaf][jump_banjar]
