@@ -176,15 +176,15 @@ class Papan():
 
     def move_player(self):
         board = self.board
-        kolom = int(input("Masukkan kolom dari titik yang ingin dipindah: "))
         row = int(input("Masukkan row dari titik yang ingin dipindah: "))
-        for a in (self.possibleMoveAndJump(board,kolom,row)):
+        kolom = int(input("Masukkan kolom dari titik yang ingin dipindah: "))
+        for a in (self.possibleMoveAndJump(board,row,kolom)):
             print(a)
             print("tetangga JUMP: ", a.getLoc())
-        kolom_tujuan = int(input("Masukkan kolom dari titik yang ingin dituju: "))
-        row_tujuan = int(input("Masukkan row dari titik yang ingin dituju: "))
+        kolom_tujuan = int(input("Masukkan row dari titik yang ingin dituju: "))
+        row_tujuan = int(input("Masukkan kolom dari titik yang ingin dituju: "))
         #if pilihan valid:
-        self.move(board[kolom][row], board[kolom_tujuan][row_tujuan])
+        self.move(board[row][kolom], board[kolom_tujuan][row_tujuan])
         isWin = fungsikemenangan.cekWinner(board, self.red_goals, self.green_goals)
         if (isWin):
             if (isWin == Square.P_GREEN):
@@ -214,10 +214,10 @@ class Papan():
             list_sebelah = []
 
         occupy = [0, 1, 2]
-        if (board[shaf][banjar].piece != 1):
+        if (board[shaf][banjar].tile != 1):
             print("masuk remove 1")
             occupy.remove(1)
-        if (board[shaf][banjar].piece != 0) and (board[shaf][banjar].piece != 1):
+        if (board[shaf][banjar].tile != 0) and (board[shaf][banjar].tile != 1):
             print("masuk remove 0")
             occupy.remove(0)
 
@@ -255,6 +255,8 @@ class Papan():
         return list_sebelah
 
 b = Papan(8)
+b.tryDisplay()
+b.move_player()
 b.tryDisplay()
 b.move_player()
 b.tryDisplay()
