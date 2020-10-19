@@ -180,4 +180,5 @@ class Papan():
         self.eksekusi = False
 
 
-    
+def move_player():
+    print()
