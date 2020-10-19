@@ -34,6 +34,7 @@ class Papan():
         self.green_goals = fungsikemenangan.getAllGreen(self.board)
         self.red_goals = fungsikemenangan.getAllRed(self.board)
         self.tryDisplay()
+<<<<<<< Updated upstream
         while (not self.win):
             if self.current_turn == self.computer:
                 self.execute_computer()
@@ -42,6 +43,16 @@ class Papan():
             else:
                 self.move_player()
                 self.tryDisplay()
+=======
+        #while (not self.win):
+        #    if self.current_turn == self.computer:
+        #        self.execute_computer()
+        #        print("habis gini ada yg pindah")
+        #        self.tryDisplay()
+        #    else:
+        #        self.move_player()
+        #        self.tryDisplay()
+>>>>>>> Stashed changes
     
     #Fungsi eksekusi move computer/Red (AI)
     #def execute(self):
@@ -251,7 +262,11 @@ class Papan():
         if (board[shaf][banjar].tile != board[shaf][banjar].piece):
             print("masuk remove 1")
             occupy.remove(1)
+<<<<<<< Updated upstream
         if (board[shaf][banjar].tile != 0) and (board[shaf][banjar].piece != board[shaf][banjar].tile):
+=======
+        if (board[shaf][banjar].tile != 0) and (board[shaf][banjar].tile != board[shaf][banjar].piece):
+>>>>>>> Stashed changes
             print("masuk remove 0")
             occupy.remove(0)
 
@@ -290,3 +305,5 @@ class Papan():
         return list_sebelah
 
 b = Papan(8)
+for a in (b.possibleMoveAndJump(b.board, 0, 0)):
+    print(a.getLoc())
