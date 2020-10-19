@@ -9,6 +9,7 @@ def getAllRed(board):
                 array.append(board[i][j])
     return array
 
+
 def getAllGreen(board):
     array = []
     for i in range(len(board)):
@@ -38,7 +39,7 @@ def cekWinner(Board, redGoals, greenGoals):
     else:
         return None
 
-n = 4
+n = 8
 
 board = [[0 for i in range(n)] for j in range(n)]
 for i in range(n):
@@ -49,9 +50,16 @@ for i in range(n):
         else:
             board[i][j]= Square(1, 1, i, j)
 
+
 # print(board)
 # a = getAllGreen(board)
-# b = getAllRed(board)
-# print(a)
-# print(b)
+# # b = getAllRed(board)
+# # for x in a:
+# #     print(x.loc)
+
+# # print("pemisah")
+# # for y in b:
+# #     print(y.loc)
+# # print(a)
+# # print(b)
 # print(cekWinner(board, b, a))

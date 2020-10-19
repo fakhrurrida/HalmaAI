@@ -114,11 +114,17 @@ class Papan():
         
         if maximizing:
             allRed = fungsikemenangan.getAllRed(self.board)
+            print()
+            for i in allRed:
+                print(i.loc)
+            print()
             for square in allRed:
                 row, col = square.loc
                 move = self.possibleMoveAndJump(self.board, row, col)
                 moves.append((square, move))
-        
+                for x in move:
+                    print(square.loc, x.loc)
+                print("-----------------------------5")
         else:
             allGreen = fungsikemenangan.getAllGreen(self.board)
             for square in allGreen:
@@ -126,9 +132,9 @@ class Papan():
                 move = self.possibleMoveAndJump(self.board, row, col)
                 moves.append((square,move))
         
-        for move in moves:
-            for tujuan in move[1]:
-                print(move[0].loc, tujuan.loc)
+        # for move in moves:
+        #     for tujuan in move[1]:
+        #         print(move[0].loc, tujuan.loc)
         
         print("MAsuk ga")
         for move in moves:
@@ -245,7 +251,7 @@ class Papan():
         if (board[shaf][banjar].tile != board[shaf][banjar].piece):
             print("masuk remove 1")
             occupy.remove(1)
-        if (board[shaf][banjar].tile != 0) and (board[shaf][banjar].piece != board[shaf][banjar].piece):
+        if (board[shaf][banjar].tile != 0) and (board[shaf][banjar].piece != board[shaf][banjar].tile):
             print("masuk remove 0")
             occupy.remove(0)
 
@@ -264,6 +270,7 @@ class Papan():
                 if (tetangga.piece == 0):
                     if (not isJumpMove):
                         list_sebelah.append(tetangga)
+                        print("5555555555555555555555555555555555555555555555555555")
                     continue
                 
                 # Check jump tiles
