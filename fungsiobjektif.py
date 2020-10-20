@@ -3,6 +3,8 @@ from math import *
 
 pairedRed = [] # RED's GOAL, has been set as nearest, list of tuple
 pairedGreen = [] # GREEN's GOAL, has been set as nearest, list of tuple
+print(pairedGreen)
+print(pairedRed)
 
 def jarakTitik(pInit, pGoal):
 # pInit, pGoal --> Square
@@ -46,7 +48,7 @@ def findNearest(pInit, board):
                     if (thisJarak < jarak):
                         jarak = thisJarak
                         nearest = goal.loc
-        pairedGreen.append(nearest)
+            pairedGreen.append(nearest)
 
     else: #  pInit.piece == Square.P_RED
         if (pInit in redGoal): # ALREADY IN GOAL 
@@ -60,7 +62,7 @@ def findNearest(pInit, board):
                     if (thisJarak < jarak):
                         jarak = thisJarak
                         nearest = goal.loc
-        pairedRed.append(nearest)
+            pairedRed.append(nearest)
 
     return nearest, jarak # TUPLE, integer
 
@@ -82,4 +84,3 @@ def gameStateValue(board):
     
     totalJarak = jarakRed - jarakGreen # assumption: computer == RED
     return (totalJarak * (-1))
-
