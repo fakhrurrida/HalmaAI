@@ -36,18 +36,18 @@ class Papan():
         self.green_goals = fungsikemenangan.getAllGreen(self.board)
         self.red_goals = fungsikemenangan.getAllRed(self.board)
         self.tryDisplay()
-        while (not self.win):
-            if self.current_turn == self.computer:
-                print(self.board[5][5].piece)
-                self.execute_computer()
-                print(self.board[5][5].piece)
-                # print("habis gini ada yg pindah")
-                self.tryDisplay()
-            else:
-                print(self.board[5][5].piece)
-                self.move_player()
-                print(self.board[5][5].piece)
-                self.tryDisplay()
+        # while (not self.win):
+        #     if self.current_turn == self.computer:
+        #         print(self.board[5][5].piece)
+        #         self.execute_computer()
+        #         print(self.board[5][5].piece)
+        #         print("habis gini ada yg pindah")
+        #         self.tryDisplay()
+        #     else:
+        #         print(self.board[5][5].piece)
+        #         self.move_player()
+        #         print(self.board[5][5].piece)
+        #         self.tryDisplay()
     
     #Fungsi eksekusi move computer/Red (AI)
     #def execute(self):
@@ -261,7 +261,11 @@ class Papan():
         bestMove = None
         moves = []
         i=0
+<<<<<<< Updated upstream
         # print(self.board[5][5].piece)    
+=======
+        print(self.board[5][5].piece, ",", self.board[6][6].piece)    
+>>>>>>> Stashed changes
         if maximizing:
             print("MAXIMIZING")
             allRed = fungsikemenangan.getAllRed(boardBaru)
@@ -297,7 +301,7 @@ class Papan():
                 
                 # self.move(move[0], tujuan)
                 
-                print("------------------------")
+                #print("------------------------")
                 
                 piece = move[0].piece
                 move[0].piece = Square.P_NONE
@@ -308,12 +312,17 @@ class Papan():
                 
                 value, Move = self.minimax(boardBaru, t_limit, a, b, not maximizing, depth-1)
                 
-                print(value)
+                #print(value)
                 #print(bestMove[0].loc,bestMove[1].loc)
+<<<<<<< Updated upstream
                 print("LEWATIN REKURSIF")
                 
                 #boardBaru[move[0].row][move[0].col] = 
                 # boardBaru[tujuan.row][tujuan.col] = Square.P_NONE
+=======
+                #print("LEWATIN REKURSIF")
+
+>>>>>>> Stashed changes
                 tujuan.piece = Square.P_NONE
                 move[0].piece = piece
                 
@@ -321,13 +330,13 @@ class Papan():
                     bestValue = value
                     bestMove = (move[0].loc, tujuan.loc)
                     a = max(a, value)
-                    print("MAXING")
+                    #print("MAXING")
 
                 if not maximizing and value < bestValue:
                     bestValue = value
                     bestMove = (move[0].loc, tujuan.loc)
                     b = min(b, value)
-                    print("MINING")
+                    #print("MINING")
 
                 if b <= a:
                     ("DAPET B")
@@ -357,6 +366,7 @@ class Papan():
         print(best_move)
         square_before = self.board[best_move[0][0]][best_move[0][1]]
         square_after = self.board[best_move[1][0]][best_move[1][1]]
+        self.tryDisplay()
         print("Befooree",square_before.getLoc())
         print("AFTERRR",square_after.getLoc())
 
@@ -389,7 +399,7 @@ class Papan():
         kolom_tujuan = int(input("Masukkan row dari titik yang ingin dituju: "))
         row_tujuan = int(input("Masukkan kolom dari titik yang ingin dituju: "))
         #if pilihan valid:
-        self.move(board[row][kolom], board[kolom_tujuan][row_tujuan])
+        self.move(self.board[row][kolom], self.board[kolom_tujuan][row_tujuan])
         isWin = fungsikemenangan.cekWinner(board, self.red_goals, self.green_goals)
         if (isWin):
             if (isWin == Square.P_GREEN):
@@ -408,11 +418,12 @@ class Papan():
         angka = 0
         for shaf in range (self.b_size):
             for banjar in range (self.b_size):
-                if (banjar != 7):
+                if (banjar != self.b_size-1):
                     print(self.board[shaf][banjar].piece, end=" ")
                 else:
                     print(self.board[shaf][banjar].piece)
                 angka+=1
+        print(angka)
 
     def possibleMoveAndJump(self, board, shaf, banjar, list_sebelah=[], isJumpMove=False):
         if (list_sebelah is None):
@@ -484,4 +495,7 @@ class Papan():
 
     #     return value*-1
 
-b = Papan(8)
+b = Papan(10)
+b.move_player()
+b.tryDisplay()
+print(fungsiobjektif.gameStateValue(b.board))
