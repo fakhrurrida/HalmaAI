@@ -4,6 +4,7 @@ import math
 import fungsikemenangan
 import time
 import random
+import copy
 
 class Papan():
     
@@ -243,6 +244,11 @@ class Papan():
     #     # print(bestMove)
     #     return bestValue, bestMove
     
+    def moveBoardBaru(self, boardBaru, squareAwal, squareTujuan):
+        boardBaru[squareTujuan.row][squareTujuan.col] = boardBaru[squareAwal.row][squareAwal.col]
+        boardBaru[squareAwal.row][squareAwal.col] = Square.P_NONE
+    
+    
     def minimax(self, boardBaru, t_limit, a=-math.inf, b=math.inf, maximizing=True,  depth=3):
         
 
@@ -255,7 +261,7 @@ class Papan():
         bestMove = None
         moves = []
         i=0
-        print(self.board[5][5].piece)    
+        # print(self.board[5][5].piece)    
         if maximizing:
             print("MAXIMIZING")
             allRed = fungsikemenangan.getAllRed(boardBaru)
@@ -297,12 +303,17 @@ class Papan():
                 move[0].piece = Square.P_NONE
                 tujuan.piece = piece
                 
+                #boardBaru[tujuan.row][tujuan.col] = boardBaru[move[0].row][move[0].col]
+                #boardBaru[move[0].row][move[0].col] = Square.P_NONE
+                
                 value, Move = self.minimax(boardBaru, t_limit, a, b, not maximizing, depth-1)
                 
                 print(value)
                 #print(bestMove[0].loc,bestMove[1].loc)
                 print("LEWATIN REKURSIF")
-
+                
+                #boardBaru[move[0].row][move[0].col] = 
+                # boardBaru[tujuan.row][tujuan.col] = Square.P_NONE
                 tujuan.piece = Square.P_NONE
                 move[0].piece = piece
                 
