@@ -14,7 +14,7 @@ def findRedGoal(board):
 # Return list of Square
     listOfRedGoal = []
     n = len(board)
-    for row in range(n-4, board.n):
+    for row in range(n-4, n):
         for col in range(n-4, n):
             if (board[row][col].piece == Square.P_RED):
                 listOfRedGoal.append(board[row][col])

@@ -243,13 +243,13 @@ class Papan():
     #     # print(bestMove)
     #     return bestValue, bestMove
     
-    def minimax(self, t_limit, a=-math.inf, b=math.inf, maximizing=True,  depth=3):
+    def minimax(self, boardBaru, t_limit, a=-math.inf, b=math.inf, maximizing=True,  depth=3):
         
 
         #basis
-        if depth == 0 or fungsikemenangan.cekWinner(self.board, self.red_goals, self.green_goals) or time.time() > t_limit:
+        if depth == 0 or fungsikemenangan.cekWinner(boardBaru, self.red_goals, self.green_goals) or time.time() > t_limit:
             
-            return self.utility_distance(), None
+            return fungsiobjektif.gameStateValue(boardBaru), None
     
         bestValue = float("-inf") if maximizing else float("inf")
         bestMove = None
@@ -258,18 +258,18 @@ class Papan():
         print(self.board[5][5].piece)    
         if maximizing:
             print("MAXIMIZING")
-            allRed = fungsikemenangan.getAllRed(self.board)
+            allRed = fungsikemenangan.getAllRed(boardBaru)
             for square in allRed:
                 row, col = square.loc
-                move = self.possibleMoveAndJump(self.board, row, col, [])
+                move = self.possibleMoveAndJump(boardBaru, row, col, [])
                 moves.append((square, move))
 
         else:
             print("MINIMIZING")
-            allGreen = fungsikemenangan.getAllGreen(self.board)
+            allGreen = fungsikemenangan.getAllGreen(boardBaru)
             for square in allGreen:
                 row, col = square.loc
-                move = self.possibleMoveAndJump(self.board, row, col, [])
+                move = self.possibleMoveAndJump(boardBaru, row, col, [])
                 moves.append((square,move))
         
         # bestMove = None
@@ -297,7 +297,7 @@ class Papan():
                 move[0].piece = Square.P_NONE
                 tujuan.piece = piece
                 
-                value, Move = self.minimax(t_limit, a, b, not maximizing, depth-1)
+                value, Move = self.minimax(boardBaru, t_limit, a, b, not maximizing, depth-1)
                 
                 print(value)
                 #print(bestMove[0].loc,bestMove[1].loc)
@@ -325,12 +325,22 @@ class Papan():
         # print(bestMove)
         return bestValue, bestMove
     
-    
+    def copyBoard(self, boardLama):
+        boardBaru = [[None for i in range(len(boardLama))] for j in range(len(boardLama))]
+        
+        for baris in range(len(boardLama)):
+            for kolom in range(len(boardLama)):
+                a = boardLama[baris][kolom]
+                x = Square(a.tile, a.piece, a.row, a.col)
+                boardBaru[baris][kolom] = x
+        return boardBaru
+
     def execute_computer(self):
         self.eksekusi = True
+        y = self.copyBoard(self.board)
         waktu_maks = time.time() + self.time_limit
         waktu_mulai = time.time()
-        minimaxValue, best_move = self.minimax(waktu_maks)
+        minimaxValue, best_move = self.minimax(y, waktu_maks)
         waktu_akhir = time.time()
         print("Waktu minimax: ", waktu_akhir-waktu_mulai)
         print(best_move)
@@ -439,28 +449,28 @@ class Papan():
                     self.possibleMoveAndJump(board, jump_tetangga.getLoc()[0], jump_tetangga.getLoc()[1], list_sebelah, True)
         return list_sebelah
     
-    def utility_distance(self):
+    # def utility_distance(self):
     
-        def point_distance(p0, p1):
-            return math.sqrt((p1[0] - p0[0])**2 + (p1[1] - p0[1])**2)
+    #     def point_distance(p0, p1):
+    #         return math.sqrt((p1[0] - p0[0])**2 + (p1[1] - p0[1])**2)
 
-        value = 0
+    #     value = 0
 
-        for col in range(self.b_size):
-            for row in range(self.b_size):
+    #     for col in range(self.b_size):
+    #         for row in range(self.b_size):
 
-                tile = self.board[row][col]
+    #             tile = self.board[row][col]
 
-                if tile.piece == Square.P_GREEN:
-                    distances = [point_distance(tile.loc, g.loc) for g in
-                                 self.red_goals if g.piece != Square.P_GREEN]
-                    value -= max(distances) if len(distances) else -50
+    #             if tile.piece == Square.P_GREEN:
+    #                 distances = [point_distance(tile.loc, g.loc) for g in
+    #                              self.red_goals if g.piece != Square.P_GREEN]
+    #                 value -= max(distances) if len(distances) else -50
 
-                elif tile.piece == Square.P_RED:
-                    distances = [point_distance(tile.loc, g.loc) for g in
-                                 self.green_goals if g.piece != Square.P_RED]
-                    value += max(distances) if len(distances) else -50
+    #             elif tile.piece == Square.P_RED:
+    #                 distances = [point_distance(tile.loc, g.loc) for g in
+    #                              self.green_goals if g.piece != Square.P_RED]
+    #                 value += max(distances) if len(distances) else -50
 
-        return value*-1
+    #     return value*-1
 
 b = Papan(8)
