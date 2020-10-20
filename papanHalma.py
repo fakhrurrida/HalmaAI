@@ -230,41 +230,42 @@ class Papan():
                     row, col = square.loc
                     move = self.cleanPossibleMoveAndJump(row, col, self.possibleMoveAndJump(boardBaru, row, col, []))
                     moves.append((square, move))
+
+        while bestMove == None:        
+            randAwal = random.randint(0, len(moves)-1)
+            moveAwal = moves[randAwal]
+            for tujuan in moveAwal[1]:
                 
-        randAwal = random.randint(0, len(moves)-1)
-        moveAwal = moves[randAwal]
-        for tujuan in moveAwal[1]:
-            
-            if time.time() > t_limit:
+                if time.time() > t_limit:
+                        return bestValue, bestMove
+                    
+                
+                piece = moveAwal[0].piece
+                moveAwal[0].piece = Square.P_NONE
+                tujuan.piece = piece
+                
+                
+                value, Move = self.minimaxLocal(com, boardBaru, t_limit, a, b, not maximizing, depth-1)
+                
+
+                tujuan.piece = Square.P_NONE
+                moveAwal[0].piece = piece
+                
+                if maximizing and value > bestValue:  #BALIKIN LAGI TANDANYA JANGAN LUPA
+                    bestValue = value
+                    bestMove = (moveAwal[0].loc, tujuan.loc)
+                    a = max(a, value)
+                    #print("MAXING")
+
+                if not maximizing and value < bestValue:
+                    bestValue = value
+                    bestMove = (moveAwal[0].loc, tujuan.loc)
+                    b = min(b, value)
+                    #print("MINING")
+
+                if b <= a:
+                    #("DAPET B")
                     return bestValue, bestMove
-                
-            
-            piece = moveAwal[0].piece
-            moveAwal[0].piece = Square.P_NONE
-            tujuan.piece = piece
-            
-            
-            value, Move = self.minimaxLocal(com, boardBaru, t_limit, a, b, not maximizing, depth-1)
-            
-
-            tujuan.piece = Square.P_NONE
-            moveAwal[0].piece = piece
-            
-            if maximizing and value > bestValue:  #BALIKIN LAGI TANDANYA JANGAN LUPA
-                bestValue = value
-                bestMove = (moveAwal[0].loc, tujuan.loc)
-                a = max(a, value)
-                #print("MAXING")
-
-            if not maximizing and value < bestValue:
-                bestValue = value
-                bestMove = (moveAwal[0].loc, tujuan.loc)
-                b = min(b, value)
-                #print("MINING")
-
-            if b <= a:
-                #("DAPET B")
-                return bestValue, bestMove
         # return int, (squareAwal.loc, squareTujuan.loc)
         # print(bestMove)
         return bestValue, bestMove
