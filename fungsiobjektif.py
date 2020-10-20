@@ -36,7 +36,7 @@ def findNearest(pInit, board):
     nearest = (None, None)
     redGoal = findRedGoal(board)
     greenGoal = findGreenGoal(board)
-
+    n = len(board)
     if (pInit.piece == Square.P_GREEN):
         if (pInit in greenGoal): # ALREADY IN GOAL 
             nearest = pInit.loc
@@ -71,7 +71,6 @@ def findNearest(pInit, board):
 def gameStateValue(board): 
     jarakRed = 0
     jarakGreen = 0
-
     for row in range(len(board)):
         for col in range(len(board)):
             thisSquare = board[row][col] # SQUARE

@@ -97,7 +97,7 @@ class Papan():
         #basis
         if depth == 0 or fungsikemenangan.cekWinner(self.board, self.red_goals, self.green_goals) or time.time() > t_limit:
             
-            return self.utility_distance(), None
+            return fungsiobjektif.gameStateValue(self.board), None
     
         bestValue = math.inf if maximizing else -math.inf
         bestMove = None
