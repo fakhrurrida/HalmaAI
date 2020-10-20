@@ -96,7 +96,7 @@ def gameStateValue(board):
     print(arrRed)
     print(arrGreen)
     totalJarak = jarakRed - jarakGreen # assumption: computer == RED
-    return (totalJarak * (-1))
+    return (totalJarak * (-1)) 
 
 # n = 8
 
