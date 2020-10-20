@@ -36,18 +36,18 @@ class Papan():
         self.green_goals = fungsikemenangan.getAllGreen(self.board)
         self.red_goals = fungsikemenangan.getAllRed(self.board)
         self.tryDisplay()
-        while (not self.win):
-            if self.current_turn == self.computer:
-                print(self.board[5][5].piece)
-                self.execute_computer()
-                print(self.board[5][5].piece)
-                print("habis gini ada yg pindah")
-                self.tryDisplay()
-            else:
-                print(self.board[5][5].piece)
-                self.move_player()
-                print(self.board[5][5].piece)
-                self.tryDisplay()
+        # while (not self.win):
+        #     if self.current_turn == self.computer:
+        #         print(self.board[5][5].piece)
+        #         self.execute_computer()
+        #         print(self.board[5][5].piece)
+        #         print("habis gini ada yg pindah")
+        #         self.tryDisplay()
+        #     else:
+        #         print(self.board[5][5].piece)
+        #         self.move_player()
+        #         print(self.board[5][5].piece)
+        #         self.tryDisplay()
     
     #Fungsi eksekusi move computer/Red (AI)
     #def execute(self):
@@ -250,8 +250,6 @@ class Papan():
     
     
     def minimax(self, boardBaru, t_limit, a=-math.inf, b=math.inf, maximizing=True,  depth=3):
-        
-
         #basis
         if depth == 0 or fungsikemenangan.cekWinner(boardBaru, self.red_goals, self.green_goals) or time.time() > t_limit:
             
@@ -457,7 +455,7 @@ class Papan():
                     continue
                 
                 tetangga = board[shaf_tetangga][banjar_tetangga]
-                if (tetangga.piece not in occupy):
+                if (tetangga.tile not in occupy):
                     continue
                 if (tetangga.piece == 0):
                     if (not isJumpMove):
@@ -475,7 +473,7 @@ class Papan():
                 if (jump_tetangga in list_sebelah) or (jump_tetangga.tile not in occupy):
                     continue
 
-                if jump_tetangga.tile == 0:
+                if jump_tetangga.piece == 0:
                     list_sebelah.insert(0, jump_tetangga)
                     self.possibleMoveAndJump(board, jump_tetangga.getLoc()[0], jump_tetangga.getLoc()[1], list_sebelah, True)
         return list_sebelah
@@ -505,3 +503,8 @@ class Papan():
     #     return value*-1
 
 b = Papan(8)
+b.board[2][2].piece = 1
+b.board[7][7].piece = 0
+b.tryDisplay()
+for sebelah in b.possibleMoveAndJump(b.board, 0, 2, []):
+    print(sebelah.getLoc())
