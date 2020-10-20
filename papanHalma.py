@@ -93,9 +93,6 @@ class Papan():
                     print("")
 
 
-        
-    #Fungsi eksekusi move computer/Red (AI)
-    #def execute(self):
 
     def move(self, before, after):
         #after.piece = before.piece
@@ -142,7 +139,7 @@ class Papan():
                     row, col = square.loc
                     move = self.cleanPossibleMoveAndJump(row, col, self.possibleMoveAndJump(boardBaru, row, col, [])) 
                     moves.append((square,move))
-            elif (com == Square.P_RED):
+            elif (com == Square.P_GREEN):
                 allRed = fungsikemenangan.getAllRed(boardBaru)
                 for square in allRed:
                     row, col = square.loc
@@ -227,7 +224,7 @@ class Papan():
                     row, col = square.loc
                     move = self.cleanPossibleMoveAndJump(row, col, self.possibleMoveAndJump(boardBaru, row, col, [])) 
                     moves.append((square,move))
-            elif (com == Square.P_RED):
+            elif (com == Square.P_GREEN):
                 allRed = fungsikemenangan.getAllRed(boardBaru)
                 for square in allRed:
                     row, col = square.loc
@@ -300,8 +297,17 @@ class Papan():
         print("Waktu minimax: ", waktu_akhir-waktu_mulai)
         print("Perpindahan kotak yang dipilih: ", best_move)
         print("Dengan value yang diambil sbesar: ", minimaxValue)
-        square_before = self.board[best_move[0][0]][best_move[0][1]]
-        square_after = self.board[best_move[1][0]][best_move[1][1]]
+        if (best_move is not None):
+            square_before = self.board[best_move[0][0]][best_move[0][1]]
+            square_after = self.board[best_move[1][0]][best_move[1][1]]
+        else:
+            square_before = None
+            while (square_before == None):
+                i = random.randint(0, self.b_size-1)
+                j = random.randint(0, self.b_size-1)
+                if self.board[i][j].piece == self.current_turn:
+                    square_before = self.board[i][j]
+            square_after = self.cleanPossibleMoveAndJump(square_before.row, square_before.col, self.possibleMoveAndJump(self.board, square_before.row, square_before.col, []))
         #self.tryDisplay()
         print("Kotak sebelum: ",square_before.getLoc())
         print("Pindah ke kotak:",square_after.getLoc())
@@ -466,9 +472,3 @@ print("3. Computer (Minimax) vs Computer (Minimax + Local Search)")
 menu = int(input("Masukkan menu yang diinginkan: "))
 print("SELAMAT BERMAIN HEHE!")
 b = Papan(besar_papan, max_time, menu)
-#b = Papan(8)
-# b.board[2][2].piece = 1
-# b.board[7][7].piece = 0
-# b.tryDisplay()
-# for sebelah in b.possibleMoveAndJump(b.board, 0, 2, []):
-#     print(sebelah.getLoc())

@@ -1,19 +1,15 @@
 class Square():
     
-    # Goal constants
+    #Goal constants (TILE)
     T_NONE = 0
     T_GREEN = 1
     T_RED = 2
 
-    # Piece constants
+    # Piece constants (PIECE)
     P_NONE = 0
     P_GREEN = 1
     P_RED = 2
 
-    # Outline constants
-    # O_NONE = 0
-    # O_SELECT = 1
-    # O_MOVED = 2
     
     def __init__(self, tile=0, piece=0, row=0, col=0):
         self.tile = tile
