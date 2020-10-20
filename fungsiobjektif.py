@@ -13,8 +13,9 @@ def jarakTitik(pInit, pGoal):
 def findRedGoal(board):
 # Return list of Square
     listOfRedGoal = []
-    for row in range((board.b_size)-4, board.b_size):
-        for col in range((board.b_size)-4, board.b_size):
+    n = len(board)
+    for row in range(n-4, board.n):
+        for col in range(n-4, n):
             if (board[row][col].piece == Square.P_RED):
                 listOfRedGoal.append(board[row][col])
     return listOfRedGoal
