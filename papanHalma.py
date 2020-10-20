@@ -261,11 +261,9 @@ class Papan():
         bestMove = None
         moves = []
         i=0
-<<<<<<< Updated upstream
         # print(self.board[5][5].piece)    
-=======
         print(self.board[5][5].piece, ",", self.board[6][6].piece)    
->>>>>>> Stashed changes
+
         if maximizing:
             print("MAXIMIZING")
             allRed = fungsikemenangan.getAllRed(boardBaru)
@@ -314,15 +312,13 @@ class Papan():
                 
                 #print(value)
                 #print(bestMove[0].loc,bestMove[1].loc)
-<<<<<<< Updated upstream
                 print("LEWATIN REKURSIF")
                 
                 #boardBaru[move[0].row][move[0].col] = 
                 # boardBaru[tujuan.row][tujuan.col] = Square.P_NONE
-=======
-                #print("LEWATIN REKURSIF")
+                #print(value)
+                #print(bestMove[0].loc,bestMove[1].loc)
 
->>>>>>> Stashed changes
                 tujuan.piece = Square.P_NONE
                 move[0].piece = piece
                 
