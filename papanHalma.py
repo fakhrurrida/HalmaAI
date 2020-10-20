@@ -36,18 +36,18 @@ class Papan():
         self.green_goals = fungsikemenangan.getAllGreen(self.board)
         self.red_goals = fungsikemenangan.getAllRed(self.board)
         self.tryDisplay()
-        # while (not self.win):
-        #     if self.current_turn == self.computer:
-        #         print(self.board[5][5].piece)
-        #         self.execute_computer()
-        #         print(self.board[5][5].piece)
-        #         print("habis gini ada yg pindah")
-        #         self.tryDisplay()
-        #     else:
-        #         print(self.board[5][5].piece)
-        #         self.move_player()
-        #         print(self.board[5][5].piece)
-        #         self.tryDisplay()
+        while (not self.win):
+            if self.current_turn == self.computer:
+                print(self.board[5][5].piece)
+                self.execute_computer()
+                print(self.board[5][5].piece)
+                print("habis gini ada yg pindah")
+                self.tryDisplay()
+            else:
+                print(self.board[5][5].piece)
+                self.move_player()
+                print(self.board[5][5].piece)
+                self.tryDisplay()
     
     #Fungsi eksekusi move computer/Red (AI)
     #def execute(self):
@@ -265,7 +265,7 @@ class Papan():
             allRed = fungsikemenangan.getAllRed(boardBaru)
             for square in allRed:
                 row, col = square.loc
-                move = self.possibleMoveAndJump(boardBaru, row, col, [])
+                move = self.cleanPossibleMoveAndJump(row, col, self.possibleMoveAndJump(boardBaru, row, col, []))
                 moves.append((square, move))
 
         else:
@@ -273,7 +273,7 @@ class Papan():
             allGreen = fungsikemenangan.getAllGreen(boardBaru)
             for square in allGreen:
                 row, col = square.loc
-                move = self.possibleMoveAndJump(boardBaru, row, col, [])
+                move = self.cleanPossibleMoveAndJump(row, col, self.possibleMoveAndJump(boardBaru, row, col, [])) 
                 moves.append((square,move))
         
         # bestMove = None
@@ -394,8 +394,8 @@ class Papan():
             kolom = int(input("Masukkan kolom dari titik yang ingin dipindah: "))
             if(board[row][kolom].piece == 1):
                 status_asal = True
-
-        for a in (self.possibleMoveAndJump(board,row,kolom,[])):
+        self.cleanPossibleMoveAndJump(row, kolom, self.possibleMoveAndJump(board, row, kolom, [])) 
+        for a in (self.cleanPossibleMoveAndJump(row, kolom, self.possibleMoveAndJump(board, row, kolom, [])) ):
             print(a)
             possible_tetangga.append(a.getLoc())
             print("tetangga JUMP: ", a.getLoc())
@@ -431,6 +431,16 @@ class Papan():
                     print(self.board[shaf][banjar].piece)
                 angka+=1
         print(angka)
+
+    def cleanPossibleMoveAndJump(self, shaf, banjar, list_sebelah):
+        for sebelah in list_sebelah:
+            if (self.current_turn==Square.P_GREEN):
+                if (self.board[shaf][banjar].tile==0 and sebelah.tile==Square.P_GREEN):
+                    list_sebelah.remove(sebelah)
+            elif (self.current_turn==Square.P_RED):
+                if (self.board[shaf][banjar].tile==0 and sebelah.tile==Square.P_RED):
+                    list_sebelah.remove(sebelah)
+        return list_sebelah
 
     def possibleMoveAndJump(self, board, shaf, banjar, list_sebelah=[], isJumpMove=False):
         if (list_sebelah is None):
@@ -503,8 +513,8 @@ class Papan():
     #     return value*-1
 
 b = Papan(8)
-b.board[2][2].piece = 1
-b.board[7][7].piece = 0
-b.tryDisplay()
-for sebelah in b.possibleMoveAndJump(b.board, 0, 2, []):
-    print(sebelah.getLoc())
+# b.board[2][2].piece = 1
+# b.board[7][7].piece = 0
+# b.tryDisplay()
+# for sebelah in b.possibleMoveAndJump(b.board, 0, 2, []):
+#     print(sebelah.getLoc())
