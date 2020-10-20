@@ -34,14 +34,14 @@ class Papan():
         self.green_goals = fungsikemenangan.getAllGreen(self.board)
         self.red_goals = fungsikemenangan.getAllRed(self.board)
         self.tryDisplay()
-        while (not self.win):
-            if self.current_turn == self.computer:
-                self.execute_computer()
-                # print("habis gini ada yg pindah")
-                self.tryDisplay()
-            else:
-                self.move_player()
-                self.tryDisplay()
+        #while (not self.win):
+        #    if self.current_turn == self.computer:
+        #        self.execute_computer()
+        #        # print("habis gini ada yg pindah")
+        #        self.tryDisplay()
+        #    else:
+        #        self.move_player()
+        #        self.tryDisplay()
     
     #Fungsi eksekusi move computer/Red (AI)
     #def execute(self):
@@ -183,7 +183,7 @@ class Papan():
         board = self.board
         row = int(input("Masukkan row dari titik yang ingin dipindah: "))
         kolom = int(input("Masukkan kolom dari titik yang ingin dipindah: "))
-        for a in (self.possibleMoveAndJump(board,row,kolom)):
+        for a in (self.possibleMoveAndJump(board,row,kolom,[])):
             print(a)
             print("tetangga JUMP: ", a.getLoc())
         kolom_tujuan = int(input("Masukkan row dari titik yang ingin dituju: "))
@@ -261,3 +261,6 @@ class Papan():
         return list_sebelah
 
 b = Papan(8)
+for i in range (2):
+    b.move_player()
+    b.tryDisplay()
