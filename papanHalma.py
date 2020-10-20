@@ -33,35 +33,36 @@ class Papan():
         self.win = False
         self.green_goals = fungsikemenangan.getAllGreen(self.board)
         self.red_goals = fungsikemenangan.getAllRed(self.board)
+        self.pilihan = pilihan
         
-        if(pilihan == 1):
+        if(pilihan == 1 or pilihan == 2):
             print("Sebagai player, Anda ingin jadi pemain yang mana?")
             print("Red (Ketik 2) / Green (Ketik 1)")
             tile_pemain = int(input())
             self.tile_pemain = tile_pemain
-            if(tile_pemain == 1):
-                self.computer = Square.P_RED
-            else:
-                self.computer = Square.P_GREEN
+            # if(tile_pemain == 1):
+            #     self.computer = Square.P_RED
+            # else:
+            #     self.computer = Square.P_GREEN
             print("")
             print("Bentuk papan halma pertama:")
             self.tryDisplay()
             while (not self.win):
                 if self.current_turn == self.computer:
-                    print("Sekarang giliran:", self.current_turn)
+                    print("Sekarang giliran:", (self.current_turn if self.tile_pemain==1 else 1))
                     self.execute_computer()
                     print("Papan halma menjadi:")
                     self.tryDisplay()
                     print("")
                     
                 else:
-                    print("Sekarang giliran:", self.current_turn)
+                    print("Sekarang giliran:", (self.current_turn if self.tile_pemain==1 else 2)) 
                     self.move_player()
                     print("")
                     print("Papan halma menjadi:")
                     self.tryDisplay()
                     print("")
-    
+        
     #Fungsi eksekusi move computer/Red (AI)
     #def execute(self):
 
@@ -286,6 +287,8 @@ class Papan():
                 row, col = square.loc
                 move = self.cleanPossibleMoveAndJump(row, col, self.possibleMoveAndJump(boardBaru, row, col, [])) 
                 moves.append((square,move))
+                
+        
         
         # bestMove = None
         # if maximizing:
@@ -348,6 +351,146 @@ class Papan():
         # print(bestMove)
         return bestValue, bestMove
     
+    def minimaxLocal(self, boardBaru, t_limit, a=-math.inf, b=math.inf, maximizing=True,  depth=3):
+        #basis
+        if depth == 0 or fungsikemenangan.cekWinner(boardBaru, self.red_goals, self.green_goals) or time.time() > t_limit:
+            
+            return fungsiobjektif.gameStateValue(boardBaru), None
+    
+        bestValue = float("-inf") if maximizing else float("inf")
+        bestMove = None
+        moves = []
+        i=0
+        #print(self.board[5][5].piece, ",", self.board[6][6].piece)    
+        if maximizing:
+            allRed = fungsikemenangan.getAllRed(boardBaru)
+            for square in allRed:
+                row, col = square.loc
+                move = self.cleanPossibleMoveAndJump(row, col, self.possibleMoveAndJump(boardBaru, row, col, []))
+                moves.append((square, move))
+
+        else:
+            allGreen = fungsikemenangan.getAllGreen(boardBaru)
+            for square in allGreen:
+                row, col = square.loc
+                move = self.cleanPossibleMoveAndJump(row, col, self.possibleMoveAndJump(boardBaru, row, col, [])) 
+                moves.append((square,move))
+                
+        
+        
+        # bestMove = None
+        # if maximizing:
+        #     bestValue = float("-inf")
+        #     moves = self.get_next_moves(Square.P_RED)
+        # else:
+        #     bestValue= float("inf")
+        #     moves = self.get_next_moves((Square.P_GREEN))
+        
+        #print(depth)
+        #print(len(moves))
+        # print("MAsuk ga")
+        randAwal = random.randint(0, len(moves)-1)
+        moveAwal = moves[randAwal]
+        for tujuan in moveAwal[1]:
+            
+            if time.time() > t_limit:
+                    return bestValue, bestMove
+                
+                # self.move(move[0], tujuan)
+                
+                #print("------------------------")
+            
+            piece = moveAwal[0].piece
+            moveAwal[0].piece = Square.P_NONE
+            tujuan.piece = piece
+            
+            #boardBaru[tujuan.row][tujuan.col] = boardBaru[move[0].row][move[0].col]
+            #boardBaru[move[0].row][move[0].col] = Square.P_NONE
+            
+            value, Move = self.minimax(boardBaru, t_limit, a, b, not maximizing, depth-1)
+            
+            #print(value)
+            #print(bestMove[0].loc,bestMove[1].loc)
+            #print("LEWATIN REKURSIF")
+            
+            #boardBaru[move[0].row][move[0].col] = 
+            # boardBaru[tujuan.row][tujuan.col] = Square.P_NONE
+            #print(value)
+            #print(bestMove[0].loc,bestMove[1].loc)
+
+            tujuan.piece = Square.P_NONE
+            moveAwal[0].piece = piece
+            
+            if maximizing and value > bestValue:  #BALIKIN LAGI TANDANYA JANGAN LUPA
+                bestValue = value
+                bestMove = (moveAwal[0].loc, tujuan.loc)
+                a = max(a, value)
+                #print("MAXING")
+
+            if not maximizing and value < bestValue:
+                bestValue = value
+                bestMove = (moveAwal[0].loc, tujuan.loc)
+                b = min(b, value)
+                #print("MINING")
+
+            if b <= a:
+                #("DAPET B")
+                return bestValue, bestMove
+        # return int, (squareAwal.loc, squareTujuan.loc)
+        # print(bestMove)
+        return bestValue, bestMove
+        
+        # for move in moves:
+        #     for tujuan in move[1]:
+                
+        #         if time.time() > t_limit:
+        #             return bestValue, bestMove
+                
+        #         # self.move(move[0], tujuan)
+                
+        #         #print("------------------------")
+                
+        #         piece = move[0].piece
+        #         move[0].piece = Square.P_NONE
+        #         tujuan.piece = piece
+                
+        #         #boardBaru[tujuan.row][tujuan.col] = boardBaru[move[0].row][move[0].col]
+        #         #boardBaru[move[0].row][move[0].col] = Square.P_NONE
+                
+        #         value, Move = self.minimax(boardBaru, t_limit, a, b, not maximizing, depth-1)
+                
+        #         #print(value)
+        #         #print(bestMove[0].loc,bestMove[1].loc)
+        #         #print("LEWATIN REKURSIF")
+                
+        #         #boardBaru[move[0].row][move[0].col] = 
+        #         # boardBaru[tujuan.row][tujuan.col] = Square.P_NONE
+        #         #print(value)
+        #         #print(bestMove[0].loc,bestMove[1].loc)
+
+        #         tujuan.piece = Square.P_NONE
+        #         move[0].piece = piece
+                
+        #         if maximizing and value > bestValue:  #BALIKIN LAGI TANDANYA JANGAN LUPA
+        #             bestValue = value
+        #             bestMove = (move[0].loc, tujuan.loc)
+        #             a = max(a, value)
+        #             #print("MAXING")
+
+        #         if not maximizing and value < bestValue:
+        #             bestValue = value
+        #             bestMove = (move[0].loc, tujuan.loc)
+        #             b = min(b, value)
+        #             #print("MINING")
+
+        #         if b <= a:
+        #             #("DAPET B")
+        #             return bestValue, bestMove
+        # # return int, (squareAwal.loc, squareTujuan.loc)
+        # # print(bestMove)
+        # return bestValue, bestMove
+    
+    
     def copyBoard(self, boardLama):
         boardBaru = [[None for i in range(len(boardLama))] for j in range(len(boardLama))]
         
@@ -366,7 +509,11 @@ class Papan():
         y = self.copyBoard(self.board)
         waktu_maks = time.time() + self.time_limit
         waktu_mulai = time.time()
-        minimaxValue, best_move = self.minimax(y, waktu_maks)
+        if self.pilihan == 1:
+            minimaxValue, best_move = self.minimax(y, waktu_maks)
+        elif self.pilihan == 2:
+            minimaxValue, best_move = self.minimaxLocal(y, waktu_maks)
+            
         waktu_akhir = time.time()
         print("Waktu minimax: ", waktu_akhir-waktu_mulai)
         print("Perpindahan kotak yang dipilih: ", best_move)
@@ -384,9 +531,9 @@ class Papan():
         isWin = fungsikemenangan.cekWinner(self.board, self.red_goals, self.green_goals)
         if (isWin):
             if (isWin == Square.P_GREEN):
-                print("GREEN WINNER WINNER CHICKEN DINNER")
+                print("PLAYER WINNER WINNER CHICKEN DINNER")
             elif (isWin == Square.P_RED):
-                print("RED WINNER WINNER CHICKEN DINNER")
+                print("COMPUTER WINNER WINNER CHICKEN DINNER")
             self.current_turn = None
             self.win = True
         else:
@@ -426,9 +573,9 @@ class Papan():
         isWin = fungsikemenangan.cekWinner(board, self.red_goals, self.green_goals)
         if (isWin):
             if (isWin == Square.P_GREEN):
-                print("GREEN WINNER WINNER CHICKEN DINNER")
+                print("PLAYER WINNER WINNER CHICKEN DINNER")
             elif (isWin == Square.P_RED):
-                print("RED WINNER WINNER CHICKEN DINNER")
+                print("COMPUTER WINNER WINNER CHICKEN DINNER")
             self.current_turn = None
             self.win = True
         else:
