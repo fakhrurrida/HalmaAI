@@ -9,17 +9,21 @@ def jarakTitik(pInit, pGoal):
     return sqrt(pow((pInit.row - pGoal.row), 2) + pow((pInit.col - pGoal.col), 2))
 
 def findRedGoal(board):
+# Return list of Square
     listOfRedGoal = []
-    for row in range((board.b_size-4), board.b_size):
-        for col in range((board.b_size-4), board.b_size):
-            listOfRedGoal.append(board[row][col])
+    for row in range((board.b_size)-4, board.b_size):
+        for col in range((board.b_size)-4, board.b_size):
+            if (board[row][col].piece == Square.P_RED):
+                listOfRedGoal.append(board[row][col])
     return listOfRedGoal
 
 def findGreenGoal(board):
+# Return list of Square
     listOfGreenGoal = []
     for row in range(4):
         for col in range(4):
-            listOfGreenGoal.append(board[row][col])
+            if (board[row][col].piece == Square.P_GREEN):
+                listOfGreenGoal.append(board[row][col])
     return listOfGreenGoal
 
 def findNearest(pInit, board):
@@ -36,14 +40,12 @@ def findNearest(pInit, board):
             jarak = 0
         else: # NOT YET IN GOAL
             # iterate all square in board, find the nearest
-            for row in range(4):
-                for col in range(4):
-                    thisLoc = board[row][col]
-                    if ((thisLoc in greenGoal) and ((row, col) not in pairedGreen)): # greenGoal and unassigned with Green
-                        thisJarak = jarakTitik(pInit, thisLoc)
-                        if (thisJarak < jarak):
-                            jarak = thisJarak
-                            nearest = (row, col)
+            for goal in greenGoal: # goal --> square
+                if (goal not in pairedGreen):
+                    thisJarak = jarakTitik(pInit, goal)
+                    if (thisJarak < jarak):
+                        jarak = thisJarak
+                        nearest = goal.loc
         pairedGreen.append(nearest)
 
     else: #  pInit.piece == Square.P_RED
@@ -52,14 +54,12 @@ def findNearest(pInit, board):
             jarak = 0
         else: # NOT YET IN GOAL
             # iterate all square in board, find the nearest
-            for row in range((board.b_size-4), board.b_size):
-                for col in range((board.b_size-4), board.b_size):
-                    thisLoc = board[row][col]
-                    if (((row + col) > (2 * (board.b_size - 3))) and ((row, col) not in pairedRed)): # redGoal and unassigned with Red
-                        thisJarak = jarakTitik(pInit, thisLoc)
-                        if (thisJarak < jarak):
-                            jarak = thisJarak
-                            nearest = (row, col)
+            for goal in redGoal: # goal --> square
+                if (goal not in pairedRed):
+                    thisJarak = jarakTitik(pInit, goal)
+                    if (thisJarak < jarak):
+                        jarak = thisJarak
+                        nearest = goal.loc
         pairedRed.append(nearest)
 
     return nearest, jarak # TUPLE, integer
@@ -71,13 +71,12 @@ def gameStateValue(board):
 
     for row in range(len(board)):
         for col in range(len(board)):
-            if (board[row][col].piece == Square.P_RED): # assumption: computer == RED
-                    thisSquare = board[row][col] # SQUARE
+            thisSquare = board[row][col] # SQUARE
+            if (thisSquare.piece == Square.P_RED): # assumption: computer == RED
                     near, jarak = findNearest(thisSquare, board)
                     jarakRed += jarak
             
-            elif (board[row][col].piece == Square.P_GREEN): # assumption: computer == RED
-                    thisSquare = board[row][col] # SQUARE
+            elif (thisSquare.piece == Square.P_GREEN): # assumption: computer == RED
                     near, jarak = findNearest(thisSquare, board)
                     jarakGreen += jarak
     
