@@ -4,6 +4,7 @@ import math
 import fungsikemenangan
 import time
 import random
+import copy
 
 class Papan():
     
@@ -243,11 +244,16 @@ class Papan():
     #     # print(bestMove)
     #     return bestValue, bestMove
     
-    def minimax(self, t_limit, a=-math.inf, b=math.inf, maximizing=True,  depth=3):
+    def moveBoardBaru(self, boardBaru, squareAwal, squareTujuan):
+        boardBaru[squareTujuan.row][squareTujuan.col] = boardBaru[squareAwal.row][squareAwal.col]
+        boardBaru[squareAwal.row][squareAwal.col] = Square.P_NONE
+    
+    
+    def minimax(self, boardBaru, t_limit, a=-math.inf, b=math.inf, maximizing=True,  depth=3):
         
 
         #basis
-        if depth == 0 or fungsikemenangan.cekWinner(self.board, self.red_goals, self.green_goals) or time.time() > t_limit:
+        if depth == 0 or fungsikemenangan.cekWinner(boardBaru, self.red_goals, self.green_goals) or time.time() > t_limit:
             
             return self.utility_distance(), None
     
@@ -255,21 +261,21 @@ class Papan():
         bestMove = None
         moves = []
         i=0
-        print(self.board[5][5].piece)    
+        # print(self.board[5][5].piece)    
         if maximizing:
             print("MAXIMIZING")
-            allRed = fungsikemenangan.getAllRed(self.board)
+            allRed = fungsikemenangan.getAllRed(boardBaru)
             for square in allRed:
                 row, col = square.loc
-                move = self.possibleMoveAndJump(self.board, row, col, [])
+                move = self.possibleMoveAndJump(boardBaru, row, col, [])
                 moves.append((square, move))
 
         else:
             print("MINIMIZING")
-            allGreen = fungsikemenangan.getAllGreen(self.board)
+            allGreen = fungsikemenangan.getAllGreen(boardBaru)
             for square in allGreen:
                 row, col = square.loc
-                move = self.possibleMoveAndJump(self.board, row, col, [])
+                move = self.possibleMoveAndJump(boardBaru, row, col, [])
                 moves.append((square,move))
         
         # bestMove = None
@@ -293,18 +299,23 @@ class Papan():
                 
                 print("------------------------")
                 
-                piece = move[0].piece
-                move[0].piece = Square.P_NONE
-                tujuan.piece = piece
+                # piece = move[0].piece
+                # move[0].piece = Square.P_NONE
+                # tujuan.piece = piece
                 
-                value, Move = self.minimax(t_limit, a, b, not maximizing, depth-1)
+                boardBaru[tujuan.row][tujuan.col] = boardBaru[move[0].row][move[0].col]
+                boardBaru[move[0].row][move[0].col] = Square.P_NONE
+                
+                value, Move = self.minimax(boardBaru, t_limit, a, b, not maximizing, depth-1)
                 
                 print(value)
                 #print(bestMove[0].loc,bestMove[1].loc)
                 print("LEWATIN REKURSIF")
-
-                tujuan.piece = Square.P_NONE
-                move[0].piece = piece
+                
+                # boardBaru[move[0].row][move[0].col] = 
+                # boardBaru[tujuan.row][tujuan.col] = Square.P_NONE
+                # tujuan.piece = Square.P_NONE
+                # move[0].piece = piece
                 
                 if maximizing and value > bestValue:  #BALIKIN LAGI TANDANYA JANGAN LUPA
                     bestValue = value
@@ -325,12 +336,21 @@ class Papan():
         # print(bestMove)
         return bestValue, bestMove
     
+    def copyBoard(self, boardLama):
+        boardBaru = [[None for i in range(len(boardLama))] for j in range(len(boardLama))]
+        for i in range(len(boardLama)):
+            for j in range(len(boardLama)):
+                a = boardLama[i][j]
+                boardBaru[i][j] = Square(a.tile, a.piece, a.row, a.col)
+                
+        return boardBaru
     
     def execute_computer(self):
         self.eksekusi = True
         waktu_maks = time.time() + self.time_limit
+        boardBaru = self.copyBoard(self.board)
         waktu_mulai = time.time()
-        minimaxValue, best_move = self.minimax(waktu_maks)
+        minimaxValue, best_move = self.minimax(boardBaru, waktu_maks)
         waktu_akhir = time.time()
         print("Waktu minimax: ", waktu_akhir-waktu_mulai)
         print(best_move)
