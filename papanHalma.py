@@ -261,9 +261,13 @@ class Papan():
         bestMove = None
         moves = []
         i=0
+<<<<<<< Updated upstream
         # print(self.board[5][5].piece)    
         print(self.board[5][5].piece, ",", self.board[6][6].piece)    
 
+=======
+        print(self.board[5][5].piece, ",", self.board[6][6].piece)    
+>>>>>>> Stashed changes
         if maximizing:
             print("MAXIMIZING")
             allRed = fungsikemenangan.getAllRed(boardBaru)
@@ -308,6 +312,7 @@ class Papan():
                 #boardBaru[tujuan.row][tujuan.col] = boardBaru[move[0].row][move[0].col]
                 #boardBaru[move[0].row][move[0].col] = Square.P_NONE
                 
+<<<<<<< Updated upstream
                 value, Move = self.minimax(boardBaru, t_limit, a, b, not maximizing, depth-1)
                 
                 #print(value)
@@ -318,6 +323,11 @@ class Papan():
                 # boardBaru[tujuan.row][tujuan.col] = Square.P_NONE
                 #print(value)
                 #print(bestMove[0].loc,bestMove[1].loc)
+=======
+                #print(value)
+                #print(bestMove[0].loc,bestMove[1].loc)
+                #print("LEWATIN REKURSIF")
+>>>>>>> Stashed changes
 
                 tujuan.piece = Square.P_NONE
                 move[0].piece = piece
