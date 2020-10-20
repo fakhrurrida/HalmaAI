@@ -91,15 +91,167 @@ class Papan():
         
     #     for tetangga in moveTaken:
     #         continue
+    
+    
+    # def minimax(self, max_time, a=float("-inf"),
+    #             b=float("inf"), maxing=True, depth=3):
+
+    #     # Bottomed out base case
+    #     if depth == 0 or fungsikemenangan.cekWinner(self.board, self.red_goals, self.green_goals) or time.time() > max_time:
+    #         return self.utility_distance(), None
+
+    #     # Setup initial variables and find moves
+    #     best_move = None
+        
+    #     # if maxing:
+    #     #     best_val = float("-inf")
+    #     #     moves = self.get_next_moves(player_to_max)
+    #     # else:
+    #     #     best_val = float("inf")
+    #     #     moves = self.get_next_moves((Square.P_RED
+    #     #             if player_to_max == Square.P_GREEN else Square.P_GREEN))
+
+    #     best_val = math.inf if maxing else -math.inf
+        
+    #     moves = []
+    #     i=0
+    #     print(self.board[5][5].piece)    
+    #     if maxing:
+    #         print("MAXIMIZING")
+    #         allRed = fungsikemenangan.getAllRed(self.board)
+    #         for square in allRed:
+    #             row, col = square.loc
+    #             move = self.possibleMoveAndJump(self.board, row, col, [])
+    #             moves.append((square, move))
+
+    #     else:
+    #         print("MINIMIZING")
+    #         allGreen = fungsikemenangan.getAllGreen(self.board)
+    #         for square in allGreen:
+    #             row, col = square.loc
+    #             move = self.possibleMoveAndJump(self.board, row, col, [])
+    #             moves.append((square,move))
+        
+    #     # For each move
+    #     for move in moves:
+    #         for to in move[1]:
+
+    #             # Bail out when we're out of time
+    #             if time.time() > max_time:
+    #                 return best_val, best_move
+
+    #             # Move piece to the move outlined
+    #             piece = move[0].piece
+    #             move[0].piece = Square.P_NONE
+    #             to.piece = piece
+
+    #             # Recursively call self
+    #             val, _ = self.minimax(
+    #                 max_time, a, b, not maxing, depth - 1)
+                
+    #             # Move the piece back
+    #             to.piece = Square.P_NONE
+    #             move[0].piece = piece
+
+    #             if maxing and val > best_val:
+    #                 best_val = val
+    #                 best_move = (move[0].loc, to.loc)
+    #                 a = max(a, val)
+
+    #             if not maxing and val < best_val:
+    #                 best_val = val
+    #                 best_move = (move[0].loc, to.loc)
+    #                 b = min(b, val)
+
+    #             if b <= a:
+    #                 return best_val, best_move
+
+    #     return best_val, best_move
+    
+    
+    # def minimax(self, t_limit, a=-math.inf, b=math.inf, maximizing=True,  depth=3):
+        
+
+    #     #basis
+    #     if depth == 0 or fungsikemenangan.cekWinner(self.board, self.red_goals, self.green_goals) or time.time() > t_limit:
+            
+    #         return fungsiobjektif.gameStateValue(self.board), None
+    
+    #     bestValue = math.inf if maximizing else -math.inf
+    #     bestMove = None
+    #     moves = []
+    #     i=0
+    #     print(self.board[5][5].piece)    
+    #     if maximizing:
+    #         print("MAXIMIZING")
+    #         allRed = fungsikemenangan.getAllRed(self.board)
+    #         for square in allRed:
+    #             row, col = square.loc
+    #             move = self.possibleMoveAndJump(self.board, row, col, [])
+    #             moves.append((square, move))
+
+    #     else:
+    #         print("MINIMIZING")
+    #         allGreen = fungsikemenangan.getAllGreen(self.board)
+    #         for square in allGreen:
+    #             row, col = square.loc
+    #             move = self.possibleMoveAndJump(self.board, row, col, [])
+    #             moves.append((square,move))
+        
+    #     print(depth)
+    #     print(len(moves))
+    #     # print("MAsuk ga")
+    #     for move in moves:
+    #         for tujuan in move[1]:
+                
+    #             if time.time() > t_limit:
+    #                 return bestValue, bestMove
+                
+    #             # self.move(move[0], tujuan)
+                
+    #             print("------------------------")
+                
+    #             piece = move[0].piece
+    #             move[0].piece = Square.P_NONE
+    #             tujuan.piece = piece
+                
+    #             value, Move = self.minimax(t_limit, a, b, not maximizing, depth-1)
+                
+    #             print(value)
+    #             #print(bestMove[0].loc,bestMove[1].loc)
+    #             print("LEWATIN REKURSIF")
+
+    #             tujuan.piece = Square.P_NONE
+    #             move[0].piece = piece
+                
+    #             if maximizing and value < bestValue:  #BALIKIN LAGI TANDANYA JANGAN LUPA
+    #                 bestValue = value
+    #                 bestMove = (move[0].loc, tujuan.loc)
+    #                 a = max(a, value)
+    #                 print("MAXING")
+
+    #             if not maximizing and value > bestValue:
+    #                 bestValue = value
+    #                 bestMove = (move[0].loc, tujuan.loc)
+    #                 b = min(b, value)
+    #                 print("MINING")
+
+    #             if b <= a:
+    #                 ("DAPET B")
+    #                 return bestValue, bestMove
+    #     # return int, (squareAwal.loc, squareTujuan.loc)
+    #     # print(bestMove)
+    #     return bestValue, bestMove
+    
     def minimax(self, t_limit, a=-math.inf, b=math.inf, maximizing=True,  depth=3):
         
 
         #basis
         if depth == 0 or fungsikemenangan.cekWinner(self.board, self.red_goals, self.green_goals) or time.time() > t_limit:
             
-            return fungsiobjektif.gameStateValue(self.board), None
+            return self.utility_distance(), None
     
-        bestValue = math.inf if maximizing else -math.inf
+        bestValue = float("-inf") if maximizing else float("inf")
         bestMove = None
         moves = []
         i=0
@@ -119,6 +271,14 @@ class Papan():
                 row, col = square.loc
                 move = self.possibleMoveAndJump(self.board, row, col, [])
                 moves.append((square,move))
+        
+        # bestMove = None
+        # if maximizing:
+        #     bestValue = float("-inf")
+        #     moves = self.get_next_moves(Square.P_RED)
+        # else:
+        #     bestValue= float("inf")
+        #     moves = self.get_next_moves((Square.P_GREEN))
         
         print(depth)
         print(len(moves))
@@ -146,13 +306,13 @@ class Papan():
                 tujuan.piece = Square.P_NONE
                 move[0].piece = piece
                 
-                if maximizing and value < bestValue:  #BALIKIN LAGI TANDANYA JANGAN LUPA
+                if maximizing and value > bestValue:  #BALIKIN LAGI TANDANYA JANGAN LUPA
                     bestValue = value
                     bestMove = (move[0].loc, tujuan.loc)
                     a = max(a, value)
                     print("MAXING")
 
-                if not maximizing and value > bestValue:
+                if not maximizing and value < bestValue:
                     bestValue = value
                     bestMove = (move[0].loc, tujuan.loc)
                     b = min(b, value)
@@ -165,6 +325,7 @@ class Papan():
         # print(bestMove)
         return bestValue, bestMove
     
+    
     def execute_computer(self):
         self.eksekusi = True
         waktu_maks = time.time() + self.time_limit
@@ -172,6 +333,7 @@ class Papan():
         minimaxValue, best_move = self.minimax(waktu_maks)
         waktu_akhir = time.time()
         print("Waktu minimax: ", waktu_akhir-waktu_mulai)
+        print(best_move)
         square_before = self.board[best_move[0][0]][best_move[0][1]]
         square_after = self.board[best_move[1][0]][best_move[1][1]]
         print("Befooree",square_before.getLoc())
