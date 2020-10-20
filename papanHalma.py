@@ -261,13 +261,7 @@ class Papan():
         bestMove = None
         moves = []
         i=0
-<<<<<<< Updated upstream
-        # print(self.board[5][5].piece)    
         print(self.board[5][5].piece, ",", self.board[6][6].piece)    
-
-=======
-        print(self.board[5][5].piece, ",", self.board[6][6].piece)    
->>>>>>> Stashed changes
         if maximizing:
             print("MAXIMIZING")
             allRed = fungsikemenangan.getAllRed(boardBaru)
@@ -312,7 +306,6 @@ class Papan():
                 #boardBaru[tujuan.row][tujuan.col] = boardBaru[move[0].row][move[0].col]
                 #boardBaru[move[0].row][move[0].col] = Square.P_NONE
                 
-<<<<<<< Updated upstream
                 value, Move = self.minimax(boardBaru, t_limit, a, b, not maximizing, depth-1)
                 
                 #print(value)
@@ -323,11 +316,6 @@ class Papan():
                 # boardBaru[tujuan.row][tujuan.col] = Square.P_NONE
                 #print(value)
                 #print(bestMove[0].loc,bestMove[1].loc)
-=======
-                #print(value)
-                #print(bestMove[0].loc,bestMove[1].loc)
-                #print("LEWATIN REKURSIF")
->>>>>>> Stashed changes
 
                 tujuan.piece = Square.P_NONE
                 move[0].piece = piece
@@ -450,7 +438,7 @@ class Papan():
                 shaf_tetangga = shaf + j
             
                 # skip invalid move
-                if (banjar_tetangga == banjar and shaf_tetangga == shaf) or (shaf_tetangga < 0 or banjar_tetangga < 0 or shaf_tetangga > 7 or banjar_tetangga > 7):
+                if (banjar_tetangga == banjar and shaf_tetangga == shaf) or (shaf_tetangga < 0 or banjar_tetangga < 0 or shaf_tetangga > self.b_size-1 or banjar_tetangga > self.b_size-1):
                     continue
                 
                 tetangga = board[shaf_tetangga][banjar_tetangga]
@@ -465,7 +453,7 @@ class Papan():
                 jump_shaf = shaf_tetangga + j
                 jump_banjar = banjar_tetangga + i
                 
-                if (jump_shaf < 0 or jump_banjar < 0 or jump_shaf > 7 or jump_banjar > 7):
+                if (jump_shaf < 0 or jump_banjar < 0 or jump_shaf > self.b_size-1 or jump_banjar > self.b_size-1):
                     continue
                 
                 jump_tetangga = board[jump_shaf][jump_banjar]
