@@ -8,7 +8,7 @@ import copy
 
 class Papan():
     
-    def __init__(self, b_size, time_max):
+    def __init__(self, b_size, time_max, pilihan):
         board = [[None for i in range(b_size)] for j in range(b_size)]
         
         for row in range(b_size):
@@ -34,24 +34,33 @@ class Papan():
         self.green_goals = fungsikemenangan.getAllGreen(self.board)
         self.red_goals = fungsikemenangan.getAllRed(self.board)
         
-        print("")
-        print("Bentuk papan halma pertama:")
-        self.tryDisplay()
-        while (not self.win):
-            if self.current_turn == self.computer:
-                print("Sekarang giliran:", self.current_turn)
-                self.execute_computer()
-                print("Papan halma menjadi:")
-                self.tryDisplay()
-                print("")
-                
+        if(pilihan == 1):
+            print("Sebagai player, Anda ingin jadi pemain yang mana?")
+            print("Red (Ketik 2) / Green (Ketik 1)")
+            tile_pemain = int(input())
+            self.tile_pemain = tile_pemain
+            if(tile_pemain == 1):
+                self.computer = Square.P_RED
             else:
-                print("Sekarang giliran:", self.current_turn)
-                self.move_player()
-                print("")
-                print("Papan halma menjadi:")
-                self.tryDisplay()
-                print("")
+                self.computer = Square.P_GREEN
+            print("")
+            print("Bentuk papan halma pertama:")
+            self.tryDisplay()
+            while (not self.win):
+                if self.current_turn == self.computer:
+                    print("Sekarang giliran:", self.current_turn)
+                    self.execute_computer()
+                    print("Papan halma menjadi:")
+                    self.tryDisplay()
+                    print("")
+                    
+                else:
+                    print("Sekarang giliran:", self.current_turn)
+                    self.move_player()
+                    print("")
+                    print("Papan halma menjadi:")
+                    self.tryDisplay()
+                    print("")
     
     #Fungsi eksekusi move computer/Red (AI)
     #def execute(self):
@@ -405,7 +414,7 @@ class Papan():
         for a in (self.cleanPossibleMoveAndJump(row, kolom, self.possibleMoveAndJump(board, row, kolom, [])) ):
             #print(a)
             possible_tetangga.append(a.getLoc())
-            #print("tetangga JUMP: ", a.getLoc())
+            print("Possible Moves: ", a.getLoc())
         
         while ((kolom_tujuan, row_tujuan) not in possible_tetangga):   
             print("Masukkan titik tujuan yang sesuai dengan pilihan tetangga yang tersedia!")
@@ -430,13 +439,32 @@ class Papan():
 
     def tryDisplay(self):
         angka = 0
-        for shaf in range (self.b_size):
-            for banjar in range (self.b_size):
-                if (banjar != self.b_size-1):
-                    print(self.board[shaf][banjar].piece, end=" ")
-                else:
-                    print(self.board[shaf][banjar].piece)
-                angka+=1
+        if (self.tile_pemain == 1):
+            for shaf in range (self.b_size):
+                for banjar in range (self.b_size):
+                    if (banjar != self.b_size-1):                  
+                        print(self.board[shaf][banjar].piece, end=" ")
+                    else:
+                        print(self.board[shaf][banjar].piece)
+                    angka+=1
+        elif (self.tile_pemain == 2):
+            for shaf in range (self.b_size):
+                for banjar in range (self.b_size):
+                    if (banjar != self.b_size-1): 
+                        if(self.board[shaf][banjar].piece == 1):               
+                            print(2, end=" ")
+                        elif(self.board[shaf][banjar].piece == 2):
+                            print(1, end=" ")
+                        else:
+                            print(0, end=" ")
+                    else:
+                        if(self.board[shaf][banjar].piece == 1):               
+                            print(2)
+                        elif(self.board[shaf][banjar].piece == 2):
+                            print(1)
+                        else:
+                            print(0)
+                    angka+=1
         #print(angka)
 
     def cleanPossibleMoveAndJump(self, shaf, banjar, list_sebelah):
@@ -525,8 +553,13 @@ print("")
 print("")
 besar_papan = int(input("Silahkan masukkan besar papan halma:"))
 max_time = int(input("Silahkan masukkan waktu maksimal Computer berpikir dalam detik(Untuk efisiensi pilih 10-30): "))
+print("MENU PERMAINAN")
+print("1. Computer (Minimax) vs Player")
+print("2. Computer (Minimax + Local Search) vs Player")
+print("3. Computer (Minimax) vs Computer (Minimax + Local Search)")
+menu = int(input("Masukkan menu yang diinginkan: "))
 print("SELAMAT BERMAIN HEHE!")
-b = Papan(besar_papan, max_time)
+b = Papan(besar_papan, max_time, menu)
 #b = Papan(8)
 # b.board[2][2].piece = 1
 # b.board[7][7].piece = 0
