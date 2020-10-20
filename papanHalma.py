@@ -8,7 +8,7 @@ import copy
 
 class Papan():
     
-    def __init__(self, b_size):
+    def __init__(self, b_size, time_max):
         board = [[None for i in range(b_size)] for j in range(b_size)]
         
         for row in range(b_size):
@@ -26,28 +26,32 @@ class Papan():
         self.computer = Square.P_RED
         self.b_size = b_size
         self.board = board
-        self.time_limit = 60
+        self.time_limit = time_max
         self.time_mulai = time.time()
-        self.selected_square = None
-        self.valid_moves = []
         self.current_turn = Square.P_GREEN
         self.eksekusi = False
         self.win = False
         self.green_goals = fungsikemenangan.getAllGreen(self.board)
         self.red_goals = fungsikemenangan.getAllRed(self.board)
+        
+        print("")
+        print("Bentuk papan halma pertama:")
         self.tryDisplay()
         while (not self.win):
             if self.current_turn == self.computer:
-                print(self.board[5][5].piece)
+                print("Sekarang giliran:", self.current_turn)
                 self.execute_computer()
-                print(self.board[5][5].piece)
-                print("habis gini ada yg pindah")
+                print("Papan halma menjadi:")
                 self.tryDisplay()
+                print("")
+                
             else:
-                print(self.board[5][5].piece)
+                print("Sekarang giliran:", self.current_turn)
                 self.move_player()
-                print(self.board[5][5].piece)
+                print("")
+                print("Papan halma menjadi:")
                 self.tryDisplay()
+                print("")
     
     #Fungsi eksekusi move computer/Red (AI)
     #def execute(self):
@@ -259,9 +263,8 @@ class Papan():
         bestMove = None
         moves = []
         i=0
-        print(self.board[5][5].piece, ",", self.board[6][6].piece)    
+        #print(self.board[5][5].piece, ",", self.board[6][6].piece)    
         if maximizing:
-            print("MAXIMIZING")
             allRed = fungsikemenangan.getAllRed(boardBaru)
             for square in allRed:
                 row, col = square.loc
@@ -269,7 +272,6 @@ class Papan():
                 moves.append((square, move))
 
         else:
-            print("MINIMIZING")
             allGreen = fungsikemenangan.getAllGreen(boardBaru)
             for square in allGreen:
                 row, col = square.loc
@@ -284,8 +286,8 @@ class Papan():
         #     bestValue= float("inf")
         #     moves = self.get_next_moves((Square.P_GREEN))
         
-        print(depth)
-        print(len(moves))
+        #print(depth)
+        #print(len(moves))
         # print("MAsuk ga")
         for move in moves:
             for tujuan in move[1]:
@@ -308,7 +310,7 @@ class Papan():
                 
                 #print(value)
                 #print(bestMove[0].loc,bestMove[1].loc)
-                print("LEWATIN REKURSIF")
+                #print("LEWATIN REKURSIF")
                 
                 #boardBaru[move[0].row][move[0].col] = 
                 # boardBaru[tujuan.row][tujuan.col] = Square.P_NONE
@@ -331,7 +333,7 @@ class Papan():
                     #print("MINING")
 
                 if b <= a:
-                    ("DAPET B")
+                    #("DAPET B")
                     return bestValue, bestMove
         # return int, (squareAwal.loc, squareTujuan.loc)
         # print(bestMove)
@@ -349,20 +351,26 @@ class Papan():
 
     def execute_computer(self):
         self.eksekusi = True
+        print("")
+        print("Sedang berpikir............................")
+        print("")
         y = self.copyBoard(self.board)
         waktu_maks = time.time() + self.time_limit
         waktu_mulai = time.time()
         minimaxValue, best_move = self.minimax(y, waktu_maks)
         waktu_akhir = time.time()
         print("Waktu minimax: ", waktu_akhir-waktu_mulai)
-        print(best_move)
+        print("Perpindahan kotak yang dipilih: ", best_move)
+        print("Dengan value yang diambil sbesar: ", minimaxValue)
         square_before = self.board[best_move[0][0]][best_move[0][1]]
         square_after = self.board[best_move[1][0]][best_move[1][1]]
-        self.tryDisplay()
-        print("Befooree",square_before.getLoc())
-        print("AFTERRR",square_after.getLoc())
+        #self.tryDisplay()
+        print("Kotak sebelum: ",square_before.getLoc())
+        print("Pindah ke kotak:",square_after.getLoc())
 
         self.move(square_before,square_after)
+
+
         
         isWin = fungsikemenangan.cekWinner(self.board, self.red_goals, self.green_goals)
         if (isWin):
@@ -396,9 +404,9 @@ class Papan():
                 status_asal = True
         self.cleanPossibleMoveAndJump(row, kolom, self.possibleMoveAndJump(board, row, kolom, [])) 
         for a in (self.cleanPossibleMoveAndJump(row, kolom, self.possibleMoveAndJump(board, row, kolom, [])) ):
-            print(a)
+            #print(a)
             possible_tetangga.append(a.getLoc())
-            print("tetangga JUMP: ", a.getLoc())
+            #print("tetangga JUMP: ", a.getLoc())
         
         while ((kolom_tujuan, row_tujuan) not in possible_tetangga):   
             print("Masukkan titik tujuan yang sesuai dengan pilihan tetangga yang tersedia!")
@@ -430,7 +438,7 @@ class Papan():
                 else:
                     print(self.board[shaf][banjar].piece)
                 angka+=1
-        print(angka)
+        #print(angka)
 
     def cleanPossibleMoveAndJump(self, shaf, banjar, list_sebelah):
         for sebelah in list_sebelah:
@@ -512,7 +520,15 @@ class Papan():
 
     #     return value*-1
 
-b = Papan(8)
+print("SELAMAT DATANG DI PERMAINAN HALMA XIXIXI")
+print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+print("")
+print("")
+besar_papan = int(input("Silahkan masukkan besar papan halma:"))
+max_time = int(input("Silahkan masukkan waktu maksimal Computer berpikir dalam detik(Untuk efisiensi pilih 10-30): "))
+print("SELAMAT BERMAIN HEHE!")
+b = Papan(besar_papan, max_time)
+#b = Papan(8)
 # b.board[2][2].piece = 1
 # b.board[7][7].piece = 0
 # b.tryDisplay()

@@ -93,10 +93,10 @@ def gameStateValue(board):
                     jarakGreen += jarak
                     arrGreen.append(jarak)
             
-    print(arrRed)
-    print(arrGreen)
+    #print(arrRed)
+    #print(arrGreen)
     totalJarak = jarakRed - jarakGreen # assumption: computer == RED
-    return (totalJarak * (-1)) 
+    return (totalJarak * (1)) 
 
 # n = 8
 
