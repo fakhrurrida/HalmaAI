@@ -402,7 +402,6 @@ class Papan():
             kolom = int(input("Masukkan kolom dari titik yang ingin dipindah: "))
             if(board[row][kolom].piece == 1):
                 status_asal = True
-        self.cleanPossibleMoveAndJump(row, kolom, self.possibleMoveAndJump(board, row, kolom, [])) 
         for a in (self.cleanPossibleMoveAndJump(row, kolom, self.possibleMoveAndJump(board, row, kolom, [])) ):
             #print(a)
             possible_tetangga.append(a.getLoc())
