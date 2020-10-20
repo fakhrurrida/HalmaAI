@@ -36,18 +36,18 @@ class Papan():
         self.green_goals = fungsikemenangan.getAllGreen(self.board)
         self.red_goals = fungsikemenangan.getAllRed(self.board)
         self.tryDisplay()
-        # while (not self.win):
-        #     if self.current_turn == self.computer:
-        #         print(self.board[5][5].piece)
-        #         self.execute_computer()
-        #         print(self.board[5][5].piece)
-        #         print("habis gini ada yg pindah")
-        #         self.tryDisplay()
-        #     else:
-        #         print(self.board[5][5].piece)
-        #         self.move_player()
-        #         print(self.board[5][5].piece)
-        #         self.tryDisplay()
+        while (not self.win):
+            if self.current_turn == self.computer:
+                print(self.board[5][5].piece)
+                self.execute_computer()
+                print(self.board[5][5].piece)
+                print("habis gini ada yg pindah")
+                self.tryDisplay()
+            else:
+                print(self.board[5][5].piece)
+                self.move_player()
+                print(self.board[5][5].piece)
+                self.tryDisplay()
     
     #Fungsi eksekusi move computer/Red (AI)
     #def execute(self):
@@ -385,15 +385,30 @@ class Papan():
 
     def move_player(self):
         board = self.board
-        row = int(input("Masukkan row dari titik yang ingin dipindah: "))
-        kolom = int(input("Masukkan kolom dari titik yang ingin dipindah: "))
+        possible_tetangga = []
+        kolom_tujuan = -999
+        row_tujuan = -999
+        status_asal = False
+
+        while (status_asal == False):
+            print("Masukkan titik asal yang sesuai yang tersedia!")
+            row = int(input("Masukkan row dari titik yang ingin dipindah: "))
+            kolom = int(input("Masukkan kolom dari titik yang ingin dipindah: "))
+            if(board[row][kolom].piece == 1):
+                status_asal = True
+
         for a in (self.possibleMoveAndJump(board,row,kolom,[])):
             print(a)
+            possible_tetangga.append(a.getLoc())
             print("tetangga JUMP: ", a.getLoc())
-        kolom_tujuan = int(input("Masukkan row dari titik yang ingin dituju: "))
-        row_tujuan = int(input("Masukkan kolom dari titik yang ingin dituju: "))
-        #if pilihan valid:
+        
+        while ((kolom_tujuan, row_tujuan) not in possible_tetangga):   
+            print("Masukkan titik tujuan yang sesuai dengan pilihan tetangga yang tersedia!")
+            kolom_tujuan = int(input("Masukkan row dari titik yang ingin dituju: "))
+            row_tujuan = int(input("Masukkan kolom dari titik yang ingin dituju: ")) 
+            
         self.move(self.board[row][kolom], self.board[kolom_tujuan][row_tujuan])
+
         isWin = fungsikemenangan.cekWinner(board, self.red_goals, self.green_goals)
         if (isWin):
             if (isWin == Square.P_GREEN):
@@ -489,7 +504,4 @@ class Papan():
 
     #     return value*-1
 
-b = Papan(10)
-b.move_player()
-b.tryDisplay()
-print(fungsiobjektif.gameStateValue(b.board))
+b = Papan(8)
