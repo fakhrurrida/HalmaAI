@@ -2,8 +2,8 @@ from square import Square
 from math import *
 import random
 
-pairedRed = [] # RED's GOAL, has been set as nearest, list of tuple
-pairedGreen = [] # GREEN's GOAL, has been set as nearest, list of tuple
+pairedRed = [] # RED's GOAL
+pairedGreen = [] # GREEN's GOAL
 
 def jarakTitik(pInit, pGoal):
 # pInit, pGoal --> Square
@@ -83,19 +83,19 @@ def gameStateValue(board):
     for row in range(len(board)):
         for col in range(len(board)):
             thisSquare = board[row][col] # SQUARE
-            if (thisSquare.piece == Square.P_RED): # assumption: computer == RED
+            if (thisSquare.piece == Square.P_RED): 
                     near, jarak = findNearest(thisSquare, board)
                     jarakRed += jarak
                     arrRed.append(jarak)
             
-            elif (thisSquare.piece == Square.P_GREEN): # assumption: computer == RED
+            elif (thisSquare.piece == Square.P_GREEN): 
                     near, jarak = findNearest(thisSquare, board)
                     jarakGreen += jarak
                     arrGreen.append(jarak)
             
     #print(arrRed)
     #print(arrGreen)
-    totalJarak = jarakRed - jarakGreen # assumption: computer == RED
+    totalJarak = jarakRed - jarakGreen 
     return (totalJarak * (1)) 
 
 # n = 8

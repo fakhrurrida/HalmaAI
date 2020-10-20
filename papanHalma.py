@@ -13,9 +13,9 @@ class Papan():
         
         for row in range(b_size):
             for col in range(b_size):
-                if row + col < 4: # RED
+                if row + col < 4:
                     element = Square(2, 2, row, col)
-                elif row + col > 2 * (b_size - 3): # GREEN
+                elif row + col > 2 * (b_size - 3): 
                     element = Square(1, 1, row, col)
                 else: # EMPTY
                     element = Square(0, 0, row, col)
@@ -162,18 +162,16 @@ class Papan():
                 value, Move = self.minimax(com, boardBaru, t_limit, a, b, not maximizing, depth-1)
                 
                 #print(value)
-                #print(bestMove[0].loc,bestMove[1].loc)
                 #print("LEWATIN REKURSIF")
                 
                 #boardBaru[move[0].row][move[0].col] = 
                 # boardBaru[tujuan.row][tujuan.col] = Square.P_NONE
                 #print(value)
-                #print(bestMove[0].loc,bestMove[1].loc)
 
                 tujuan.piece = Square.P_NONE
                 move[0].piece = piece
                 
-                if maximizing and value > bestValue:  #BALIKIN LAGI TANDANYA JANGAN LUPA
+                if maximizing and value > bestValue:  
                     bestValue = value
                     bestMove = (move[0].loc, tujuan.loc)
                     a = max(a, value)
@@ -251,7 +249,7 @@ class Papan():
                 tujuan.piece = Square.P_NONE
                 moveAwal[0].piece = piece
                 
-                if maximizing and value > bestValue:  #BALIKIN LAGI TANDANYA JANGAN LUPA
+                if maximizing and value > bestValue: 
                     bestValue = value
                     bestMove = (moveAwal[0].loc, tujuan.loc)
                     a = max(a, value)
